@@ -1,0 +1,16 @@
+{
+    "name": "Sistema de Préstamos",
+    "short_name": "Préstamos",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#007bff",
+    "icons": [
+      {
+        "src": "/logo-128.png",
+        "sizes": "128x128",
+        "type": "image/png"
+      }
+    ]
+  }
+  
