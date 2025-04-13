@@ -55,7 +55,7 @@ const Login = () => {
               <div className="row g-0">
                 {/* Imagen de la izquierda */}
                 <div className="col-md-6">
-                  <img src="./src/assets/logoPrestamos-wBackground-removebg-preview.png" alt="Imagen de Login" className="img-fluid h-100 w-100 object-cover" style={{ objectPosition: 'center' }} />
+                  <img src="../assets/logoPrestamos-wBackground-removebg-preview.png" alt="Imagen de Login" className="img-fluid h-100 w-100 object-cover" style={{ objectPosition: 'center' }} />
                 </div>
 
                 {/* Formulario a la derecha */}
