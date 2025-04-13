@@ -21,7 +21,6 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { MapContainer, TileLayer, Marker, Popup,useMapEvents  } from 'react-leaflet';
 import { Button } from 'react-bootstrap';
 import 'leaflet/dist/leaflet.css';
-import { set } from "mongoose";
 
 const Sidebar = () => {
 
