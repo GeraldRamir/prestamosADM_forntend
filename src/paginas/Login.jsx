@@ -5,6 +5,8 @@ import useAuth from "../hooks/useAuth";
 import Alerta from "../components/Alerta";
 import clienteAxios from "../config/axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import imagenRegistro from '../assets/logoPrestamos-wBackground-removebg-preview.png';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -55,7 +57,12 @@ const Login = () => {
               <div className="row g-0">
                 {/* Imagen de la izquierda */}
                 <div className="col-md-6">
-                  <img src="../assets/logoPrestamos-wBackground-removebg-preview.png" alt="Imagen de Login" className="img-fluid h-100 w-100 object-cover" style={{ objectPosition: 'center' }} />
+                    <img 
+                                                          src={imagenRegistro} 
+                                                          alt="Imagen de Login"
+                                                          className="img-fluid h-100 w-100 object-cover" 
+                                                          style={{ objectPosition: 'center', height: '100%', objectFit: 'cover' }} 
+                                                      />
                 </div>
 
                 {/* Formulario a la derecha */}

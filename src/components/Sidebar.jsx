@@ -265,7 +265,7 @@ const Sidebar = () => {
      <div className="sidebar-content p-3">
   <Link className="sidebar-brand d-flex align-items-center" to='/admin'>
     <img 
-      src="./src/assets/logoPrestamos-wBackground-removebg-preview.png" 
+      src="../assets/logoPrestamos-wBackground-removebg-preview.png" 
       className="img-fluid"
       style={{ maxHeight: "180px", marginBottom: "-30px", marginTop:"-20px" }}
     />
@@ -597,7 +597,7 @@ const Sidebar = () => {
       Banco
     </label>
     <input
-      type="tel"
+      type="text"
       className="form-control"
       style={{ borderRadius: "7px" }}
       id="validationCustom05"
@@ -627,7 +627,7 @@ const Sidebar = () => {
       Valor del préstamo
     </label>
     <input
-      type="text"
+      type="number"
       className="form-control"
       style={{ borderRadius: "7px" }}
       id="validationCustom07"
