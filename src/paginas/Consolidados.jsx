@@ -147,6 +147,7 @@ const Consolidados = () => {
   const handlePrintHandsontable = async () => {
     try {
       const data = await generarDatosTabla(); // Espera los datos antes de continuar
+      const empresaActual = clientesFiltrados.length > 0 ? clientesFiltrados[0].Empresa : 'Ninguna';
   
       if (!data || data.length === 0) {
         console.error("No hay datos para imprimir.");
@@ -180,7 +181,7 @@ const Consolidados = () => {
         printWindow.document.write(`
           <html>
             <head>
-              <title>CONSOLIDADO DE LA EMPRESA__________${clientes.Empresa}__________</title>
+              <title>CONSOLIDADO DE LA EMPRESA__________${empresaActual}__________</title>
               <style>
                 body { font-family: Arial, sans-serif; padding: 20px; }
                 table { width: 100%; border-collapse: collapse; }
