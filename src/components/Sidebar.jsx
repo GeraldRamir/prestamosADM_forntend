@@ -65,6 +65,10 @@ const Sidebar = () => {
   const { guardarCliente, clientes } = useClientes();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredClients, setFilteredClients] = useState([]);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+const [showDetailModal, setShowDetailModal] = useState(false);
+
   
   useEffect(() => {
     if (clientes.length > 0) {
@@ -226,18 +230,25 @@ const Sidebar = () => {
   }, [events]);
 
   const handleDateClick = (info) => {
+    // Cuando se hace clic en un día, se prepara para agregar un evento
     setNewEvent({
-      ...newEvent,
+      title: "",
       start: info.dateStr,
-      end: info.dateStr
+      end: info.dateStr,
+      description: "",
     });
-    setShowModal(true);
+    setIsEditing(false);
+    setShowDetailModal(false); // Cierra el otro modal si estaba abierto
+    setShowAddModal(true); // Muestra el modal de agregar
   };
+  
   const handleEventClick = (info) => {
-    // Almacenar la información del evento en el estado
     setEventDetails(info.event);
-    setShowModal(true); // Mostrar el modal
+    setIsEditing(true);
+    setShowAddModal(false); // Cierra el otro modal si estaba abierto
+    setShowDetailModal(true); // Muestra el modal de detalles
   };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -265,7 +276,7 @@ const Sidebar = () => {
      <div className="sidebar-content p-3">
   <Link className="sidebar-brand d-flex align-items-center" to='/admin'>
     <img 
-      src='../assets/logoPrestamos-wBackground-removebg-preview.png'
+      src="../src/assets/logoPrestamos-wBackground-removebg-preview.png" 
       className="img-fluid"
       style={{ maxHeight: "180px", marginBottom: "-30px", marginTop:"-20px" }}
     />
@@ -781,62 +792,65 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Detalles del Evento</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {eventDetails ? (
-            <div>
-              <h5>Título: {eventDetails.title}</h5>
-              <p><strong>Fecha de inicio:</strong> {new Date(eventDetails.start).toLocaleString()}</p>
-              <p><strong>Fecha de fin:</strong> {new Date(eventDetails.end).toLocaleString()}</p>
-              <p><strong>Descripción:</strong> {eventDetails.extendedProps.description || "Sin descripción"}</p>
-            </div>
-          ) : (
-            <p>Cargando detalles...</p>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
-            Cerrar
-          </button>
-        </Modal.Footer>
-      </Modal>
+      <Modal show={showDetailModal} onHide={() => setShowDetailModal(false)}>
+  <Modal.Header closeButton>
+    <Modal.Title>Detalles del Evento</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    {eventDetails ? (
+      <div>
+        <h5>Título: {eventDetails.title}</h5>
+        <p><strong>Fecha de inicio:</strong> {new Date(eventDetails.start).toLocaleString()}</p>
+        <p><strong>Fecha de fin:</strong> {new Date(eventDetails.end).toLocaleString()}</p>
+        <p><strong>Descripción:</strong> {eventDetails.extendedProps.description || "Sin descripción"}</p>
+      </div>
+    ) : (
+      <p>Cargando detalles...</p>
+    )}
+  </Modal.Body>
+  <Modal.Footer>
+    <button className="btn btn-secondary" onClick={() => setShowDetailModal(false)}>
+      Cerrar
+    </button>
+  </Modal.Footer>
+</Modal>
+
 
       {/* Modal para agregar eventos */}
-      <div className={`modal fade ${showModal ? "show" : ""}`} style={{ display: showModal ? "block" : "none" }} tabIndex="-1" aria-labelledby="eventModalLabel" aria-hidden={!showModal}>
-        <div className="modal-dialog modal-lg">
-          <div className="modal-content">
-            <div className="modal-header bg-primary text-white">
-              <h5 className="modal-title" id="eventModalLabel">{isEditing ? "Detalles del Evento" : "Agregar Evento"}</h5>
-              <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
-            </div>
-            <div className="modal-body">
-              <div className="mb-3">
-                <label htmlFor="eventTitle" className="form-label">Título del Evento</label>
-                <input type="text" className="form-control" id="eventTitle" name="title" value={newEvent.title} onChange={handleInputChange} placeholder="Ingrese el título del evento" disabled={isEditing} />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="eventStart" className="form-label">Fecha de Inicio</label>
-                <input type="datetime-local" className="form-control" id="eventStart" name="start" value={newEvent.start} onChange={handleInputChange} disabled={isEditing} />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="eventEnd" className="form-label">Fecha de Fin</label>
-                <input type="datetime-local" className="form-control" id="eventEnd" name="end" value={newEvent.end} onChange={handleInputChange} disabled={isEditing} />
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancelar</button>
-              {isEditing ? (
-                <button type="button" className="btn btn-danger" onClick={handleDeleteEvent}>Eliminar Evento</button>
-              ) : (
-                <button type="button" className="btn btn-primary" onClick={handleSaveEvent}>Guardar Evento</button>
-              )}
-            </div>
-          </div>
+      <div className={`modal fade ${showAddModal ? "show" : ""}`} style={{ display: showAddModal ? "block" : "none" }} tabIndex="-1" aria-labelledby="eventModalLabel" aria-hidden={!showAddModal}>
+  <div className="modal-dialog modal-lg">
+    <div className="modal-content">
+      <div className="modal-header bg-primary text-white">
+        <h5 className="modal-title" id="eventModalLabel">{isEditing ? "Detalles del Evento" : "Agregar Evento"}</h5>
+        <button type="button" className="btn-close" onClick={() => setShowAddModal(false)}></button>
+      </div>
+      <div className="modal-body">
+        {/* Formulario de evento */}
+        <div className="mb-3">
+          <label htmlFor="eventTitle" className="form-label">Título del Evento</label>
+          <input type="text" className="form-control" id="eventTitle" name="title" value={newEvent.title} onChange={handleInputChange} placeholder="Ingrese el título del evento" disabled={isEditing} />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="eventStart" className="form-label">Fecha de Inicio</label>
+          <input type="datetime-local" className="form-control" id="eventStart" name="start" value={newEvent.start} onChange={handleInputChange} disabled={isEditing} />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="eventEnd" className="form-label">Fecha de Fin</label>
+          <input type="datetime-local" className="form-control" id="eventEnd" name="end" value={newEvent.end} onChange={handleInputChange} disabled={isEditing} />
         </div>
       </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Cancelar</button>
+        {isEditing ? (
+          <button type="button" className="btn btn-danger" onClick={handleDeleteEvent}>Eliminar Evento</button>
+        ) : (
+          <button type="button" className="btn btn-primary" onClick={handleSaveEvent}>Guardar Evento</button>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </div>
 
