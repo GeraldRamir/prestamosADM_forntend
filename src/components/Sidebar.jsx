@@ -21,6 +21,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { MapContainer, TileLayer, Marker, Popup,useMapEvents  } from 'react-leaflet';
 import { Button } from 'react-bootstrap';
 import 'leaflet/dist/leaflet.css';
+import imagenRegistro from '../assets/logoPrestamos-wBackground-removebg-preview.png';
 
 const Sidebar = () => {
 
@@ -276,7 +277,7 @@ const [showDetailModal, setShowDetailModal] = useState(false);
      <div className="sidebar-content p-3">
   <Link className="sidebar-brand d-flex align-items-center" to='/admin'>
     <img 
-      src='../src/logoPrestamos-wBackground-removebg-preview.png'
+      src={imagenRegistro}
       className="img-fluid"
       style={{ maxHeight: "180px", marginBottom: "-30px", marginTop:"-20px" }}
     />
@@ -316,7 +317,7 @@ const [showDetailModal, setShowDetailModal] = useState(false);
 
     <li className="sidebar-item">
       <Link className="sidebar-link d-flex align-items-center" to="/admin/lista-cliente">
-        <i data-feather="cloud-lightning" className="me-2"></i>
+        <i data-feather="list" className="me-2"></i>
         <span>Listado de clientes</span>
       </Link>
     </li>
