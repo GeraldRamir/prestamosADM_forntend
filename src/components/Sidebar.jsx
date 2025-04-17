@@ -72,7 +72,7 @@ const [showDetailModal, setShowDetailModal] = useState(false);
     if (clientes.length > 0) {
       setCantidadClientes(clientes.length);
       setClientesActivos(clientes.filter(c => c.activo).length);
-      setCantidadEmpresas(new Set(clientes.map(c => c.empresa)).size);
+      setCantidadEmpresas(new Set(clientes.map(c => c.Empresa)).size);
       setEmpresasActivas(new Set(clientes.filter(c => c.activo).map(c => c.empresa)).size);
       setTotalPrestamos(clientes.reduce((acc, c) => acc + (c.prestamos || 0), 0));
       setMontoTotal(clientes.reduce((acc, c) => acc + (c.montoPrestamos || 0), 0));

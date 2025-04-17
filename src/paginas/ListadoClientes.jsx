@@ -266,29 +266,32 @@ const ListadoClientes = () => {
                           </option>
                         ))}
                       </select>
-                      <table className="table table-hover my-0">
-                        <thead>
-                          <tr>
-                            <th>Nombre</th>
-                            <th className="d-none d-xl-table-cell">Banco</th>
-                            <th className="d-none d-xl-table-cell">Empresa</th>
-                            <th>Prestamo</th>
-                            <th className="d-none d-md-table-cell">Numero de cuenta</th>
-                            <th>Ubicación</th>
-                          </tr>
-                        </thead>
-                        
-                        <tbody>
-                          {clientesFiltrados.map(cliente => (
-                            <Clientebody
-                              key={cliente._id}
-                              cliente={cliente}
-                              onEdit={() => handleEditClick(cliente)}
-                              onDelete={() => handleDeleteClick(cliente._id)}
-                            />
-                          ))}
-                        </tbody>
-                      </table>
+                      <div style={{ overflowX: "auto", width: "100%" }}>
+                          <table className="table table-hover my-0" style={{ minWidth: "700px" }}>
+                            <thead>
+                              <tr>
+                                <th>Nombre</th>
+                                <th className="d-none d-xl-table-cell">Banco</th>
+                                <th className="d-none d-xl-table-cell">Empresa</th>
+                                <th>Prestamo</th>
+                                <th className="d-none d-md-table-cell">Numero de cuenta</th>
+                                <th>Ubicación</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {clientesFiltrados.map(cliente => (
+                                <Clientebody
+                                  key={cliente._id}
+                                  cliente={cliente}
+                                  onEdit={() => handleEditClick(cliente)}
+                                  onDelete={() => handleDeleteClick(cliente._id)}
+                                />
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+
+
 
                       {modalVisible && (
                         <ModalEditarCliente

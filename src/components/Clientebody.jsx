@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import PagosModal from "./PagosModal";
 import PagosContext from "../context/PagosProvider";
+import feather from 'feather-icons';
 
 import Mapa from "./Mapa";
 
@@ -27,6 +28,9 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
       alert("Ubicación no disponible.");
     }
   };
+    useEffect(() => {
+      feather.replace(); // Reemplazar íconos de Feather después del renderizado
+    }, []);
 
   const obtenerImagenUbicacion = (lat, lng) => {
     return `https://example.com/map-image?lat=${lat}&lng=${lng}`;
@@ -74,20 +78,26 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
             {cliente.nombreUbicacion || "Ubicación no disponible"}
           </span>
         </td>
-        <td>
+        <td className="d-flex gap-2">
           <button
             onClick={() => onEdit(cliente)}
-            className="btn btn-warning btn-sm me-2"
+            className="d-flex align-items-center gap-1 border-0 px-3 py-1 rounded bg-warning bg-opacity-25 text-warning fw-bold"
+            style={{ borderRadius: "8px" }}
           >
-            Editar
+           <i data-feather="edit" className="me-2"></i>
+            <span className="bg-opacity-75">Editar</span>
           </button>
+
           <button
             onClick={() => onDelete(cliente._id)}
-            className="btn btn-danger btn-sm"
+            className="d-flex align-items-center gap-1 border-0 px-3 py-1 rounded bg-danger bg-opacity-25 text-danger fw-bold"
+            style={{ borderRadius: "8px" }}
           >
+           <i data-feather="trash" className="me-2"></i>
             Eliminar
           </button>
         </td>
+
       </tr>
 
       <PagosModal
