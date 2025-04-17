@@ -8,11 +8,8 @@ import feather from 'feather-icons';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-// import "@fullcalendar/react/dist/vdom"; // No es necesario en versiones más recientes
-// import "@fullcalendar/core/main.css";
-// import "@fullcalendar/daygrid/main.css";
 import SimpleBar from "simplebar";
-import "simplebar/dist/simplebar.css"; // Asegúrate de importar los estilos de simplebar
+import "simplebar/dist/simplebar.css";
 import useAuth from "../hooks/useAuth";
 import Alerta from "./Alerta";
 import useClientes from "../hooks/useClientes";
