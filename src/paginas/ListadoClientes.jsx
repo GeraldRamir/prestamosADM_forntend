@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import Clientebody from '../components/Clientebody';
 import ModalEditarCliente from '../components/ModalEditarCliente';
 import Mapa from '../components/Mapa';
+import imagenRegistro from '../assets/logoPrestamos-wBackground-removebg-preview.png';
 
 
 const ListadoClientes = () => {
@@ -106,7 +107,7 @@ const ListadoClientes = () => {
   <div className="sidebar-content p-3">
       <Link className="sidebar-brand d-flex align-items-center" to='/admin'>
         <img 
-      src="../src/assets/logoPrestamos-wBackground-removebg-preview.png" 
+      src={imagenRegistro}
           className="img-fluid"
           style={{ maxHeight: "180px", marginBottom: "-30px", marginTop:"-20px" }}
         />

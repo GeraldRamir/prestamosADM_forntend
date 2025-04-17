@@ -14,6 +14,7 @@ import { useContext } from "react";
 import PagosContext from "../context/PagosProvider";
 import Handsontable from 'handsontable';
 import 'handsontable/dist/handsontable.full.css';  // Importación de los estilos de Handsontable
+import imagenRegistro from '../assets/logoPrestamos-wBackground-removebg-preview.png';
 
 const Consolidados = () => {
   const { clientes } = useClientes();
@@ -220,7 +221,7 @@ const Consolidados = () => {
         <div className="sidebar-content p-3">
           <Link className="sidebar-brand d-flex align-items-center" to='/admin'>
             <img 
-              src="../src/assets/logoPrestamos-wBackground-removebg-preview.png" 
+              src={imagenRegistro}
               className="img-fluid"
               style={{ maxHeight: "180px", marginBottom: "-30px", marginTop:"-20px" }}
             />
