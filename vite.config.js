@@ -10,17 +10,17 @@ export default defineConfig({
       includeAssets: [
         'logo-72.png',
         'logo-120.png',
-        'logo-128(1).png',
-        'logo-14.png',
+        'logo-128.png', // renombrado (sugiero evitar paréntesis)
+        'logo-144.png',
         'logo-152.png',
-        './img/loco-192.png'
+        'img/loco-192.png'
       ],
-      injectRegister: 'auto', // o 'inline' para desarrollo
+      injectRegister: 'auto',
       devOptions: {
         enabled: true
       },
       workbox: {
-        maximumFileSizeToCacheInBytes: 5000000, // aumenta límite si tienes archivos grandes
+        maximumFileSizeToCacheInBytes: 5000000
       },
       manifest: {
         name: 'Prestamos-jaa',
@@ -42,12 +42,12 @@ export default defineConfig({
             sizes: '120x120'
           },
           {
-            src: 'logo-128(1).png',
+            src: 'logo-128.png',
             type: 'image/png',
             sizes: '128x128'
           },
           {
-            src: 'logo-14.png',
+            src: 'logo-144.png',
             type: 'image/png',
             sizes: '144x144'
           },
@@ -57,12 +57,22 @@ export default defineConfig({
             sizes: '152x152'
           },
           {
-            src: './img/loco-192.png',
+            src: 'img/loco-192.png',
             type: 'image/png',
-            sizes: '196x196'
+            sizes: '192x192'
           }
         ]
       }
     })
-  ]
+  ],
+
+  // 🔍 Source maps en desarrollo
+  build: {
+    sourcemap: true
+  },
+
+  // 🔧 Source maps en modo dev
+  server: {
+    sourcemap: true
+  }
 });

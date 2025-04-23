@@ -21,21 +21,6 @@
       "src": "logo-128(1)",
       "type": "image/png",
       "sizes": "128x128"
-    },
-    {
-      "src": "logo-14",
-      "type": "image/png",
-      "sizes": "144x144"
-    },
-    {
-      "src": "logo-152",
-      "type": "image/png",
-      "sizes": "152x152"
-    },
-    {
-      "src": "./img/loco-192",
-      "type": "image/png",
-      "sizes": "196x196"
     }
   ]
 }
