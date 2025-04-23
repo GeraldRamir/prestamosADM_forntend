@@ -1,16 +1,41 @@
 {
-    "name": "Sistema de Préstamos",
-    "short_name": "Préstamos",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#007bff",
-    "icons": [
-      {
-        "src": "/logo-128.png",
-        "sizes": "128x128",
-        "type": "image/png"
-      }
-    ]
-  }
-  
+  "name": "Prestamos-jaa",
+  "short_name": "PJA",
+  "start_url": ".",
+  "display": "standalone", 
+  "background_color": "#658c78",
+  "theme_color": "#658c78",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "logo-72",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "logo-120",
+      "type": "image/png",
+      "sizes": "120x120"
+    },
+    {
+      "src": "logo-128(1)",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "logo-14",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "logo-152",
+      "type": "image/png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "./img/loco-192",
+      "type": "image/png",
+      "sizes": "196x196"
+    }
+  ]
+}

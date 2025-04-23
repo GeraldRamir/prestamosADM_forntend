@@ -1,17 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';  // Estilos globales (si tienes)
-
 import App from './App';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('..public/service-worker.js')  // Registra el Service Worker
-      .then(() => console.log('Service Worker registrado'))
-      .catch((error) => console.error('Error al registrar el Service Worker:', error));
-  });
-}
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+
+serviceWorkerRegistration.register();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
