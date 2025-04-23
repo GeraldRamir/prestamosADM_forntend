@@ -20,7 +20,9 @@ export default defineConfig({
         enabled: true
       },
       workbox: {
-        maximumFileSizeToCacheInBytes: 5000000
+        cacheId: 'prestamos-app-v1', // Esto lo verás en Application → Cache Storage
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'], // Archivos a cachear
+        maximumFileSizeToCacheInBytes: 5000000, // Archivos grandes
       },
       manifest: {
         name: 'Prestamos-jaa',
