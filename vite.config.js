@@ -32,32 +32,32 @@ export default defineConfig({
         orientation: 'portrait-primary',
         icons: [
           {
-            src: 'logo-72.png',
+            src: '/logo-72.png',
             type: 'image/png',
             sizes: '72x72'
           },
           {
-            src: 'logo-120.png',
+            src: '/logo-120.png',
             type: 'image/png',
             sizes: '120x120'
           },
           {
-            src: 'logo-128.png',
+            src: '/logo-128.png',
             type: 'image/png',
             sizes: '128x128'
           },
           {
-            src: 'logo-144.png',
+            src: '/logo-14.png',
             type: 'image/png',
             sizes: '144x144'
           },
           {
-            src: 'logo-152.png',
+            src: '/logo-152.png',
             type: 'image/png',
             sizes: '152x152'
           },
           {
-            src: 'img/loco-192.png',
+            src: '/logo-192.png',
             type: 'image/png',
             sizes: '192x192'
           }
