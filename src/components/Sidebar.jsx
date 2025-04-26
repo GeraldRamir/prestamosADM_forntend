@@ -16,7 +16,6 @@ import useClientes from "../hooks/useClientes";
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { MapContainer, TileLayer, Marker, Popup,useMapEvents  } from 'react-leaflet';
-import { Button } from 'react-bootstrap';
 import 'leaflet/dist/leaflet.css';
 import imagenRegistro from '../assets/logoPrestamos-wBackground-removebg-preview.png';
 
@@ -41,7 +40,8 @@ const Sidebar = () => {
   const [copiaCedula, setcopiaCedula] = useState('');
   const [Empresa, setEmpresa] = useState('');
   const [ClaveTarjeta, setClaveTarjeta] = useState('');
-  const [Fecha, setFecha] = useState('');
+  const [FechaIngreso, setFechaIngreso] = useState('');
+  const [FechaPago, setFechaPago] = useState('');
   const [Banco, setBanco] = useState('');
   const [NumeroCuenta, setNumeroCuenta] = useState('');
   const [ValorPrestamo, setValorPrestamo] = useState('');
@@ -66,6 +66,47 @@ const Sidebar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
 const [showDetailModal, setShowDetailModal] = useState(false);
+const [deferredPrompt, setDeferredPrompt] = useState(null);
+const [showInstallButton, setShowInstallButton] = useState(false);
+
+useEffect(() => {
+  const handleBeforeInstallPrompt = (e) => {
+    console.log("beforeinstallprompt disparado ✅");
+    e.preventDefault();
+    setDeferredPrompt(e);
+    setShowInstallButton(true);
+  };
+
+  const handleAppInstalled = () => {
+    console.log("App instalada o desinstalada");
+    setShowInstallButton(false); // Oculta el botón si ya está instalada
+  };
+
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    // La app está instalada, no mostrar el botón
+    setShowInstallButton(false);
+  } else {
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+  }
+
+  return () => {
+    window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.removeEventListener('appinstalled', handleAppInstalled);
+  };
+}, []);
+
+
+
+const handleInstallClick = async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`El usuario eligió: ${outcome}`);
+    setDeferredPrompt(null);
+    setShowInstallButton(false);
+  }
+};
 
   
   useEffect(() => {
@@ -100,7 +141,7 @@ const [showDetailModal, setShowDetailModal] = useState(false);
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, Fecha, Banco, NumeroCuenta, ValorPrestamo, ubicacion, nombreUbicacion, Interes ].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes ].includes('')) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -114,13 +155,11 @@ const [showDetailModal, setShowDetailModal] = useState(false);
       error: false,
     });
   
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, Fecha, Banco, NumeroCuenta, ValorPrestamo, ubicacion, nombreUbicacion, Interes });
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, ubicacion, nombreUbicacion, Interes });
   
     form.classList.add('was-validated');
   };
-  
-  // Obtener ubicación del cliente
-  const obtenerUbicacion = () => {
+  useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -135,6 +174,33 @@ const [showDetailModal, setShowDetailModal] = useState(false);
     } else {
       console.error("Geolocalización no es compatible con este navegador");
     }
+  }, []);
+
+  // Obtener ubicación del cliente
+  const obtenerUbicacion = async () => {
+
+    if (nombreUbicacion.trim() === "") {
+      console.error("Por favor, ingresa una ubicación");
+      return;
+    }
+
+    // Usamos el geocodificador de OpenStreetMap (Nominatim) para obtener latitud y longitud
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(nombreUbicacion)}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data && data.length > 0) {
+      const { lat, lon } = data[0]; // Tomamos la primera coincidencia
+      setUbicacion({ lat: parseFloat(lat), lng: parseFloat(lon) });
+      setNombreUbicacion(data[0].display_name); // Actualizamos el campo con el nombre completo de la ubicación
+      // Aquí puedes agregar la lógica para mostrar la ubicación en el mapa
+      console.log("Coordenadas:", lat, lon);
+    } else {
+      setAlerta({
+        msg: 'No se pude encontrar la ubicación',
+        error: true,
+      });
+    }
   };
   
   // Función para obtener el nombre de la ubicación mediante reverse geocoding
@@ -143,16 +209,19 @@ const [showDetailModal, setShowDetailModal] = useState(false);
     const response = await fetch(url);
     const data = await response.json();
     if (data && data.address) {
-      const { road, city, state, country } = data.address;
+      const { road, city, country } = data.address;
       let nombreUbicacion = road || 'Ubicación desconocida';
       // Concatenar más detalles de la ubicación si existen
       if (city) nombreUbicacion += `, ${city}`;
-      if (state) nombreUbicacion += `, ${state}`;
       if (country) nombreUbicacion += `, ${country}`;
       
       setNombreUbicacion(nombreUbicacion);
     }
   };
+    // Manejador de cambios en el campo de texto
+    const handleChange = (e) => {
+      setNombreUbicacion(e.target.value);
+    };
   
   const cerrarMapa = () => {
     setMostrarMapa(false);
@@ -172,14 +241,6 @@ const [showDetailModal, setShowDetailModal] = useState(false);
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
   };
-  
-
-  
-
-  
-
-  
-
   
   useEffect(() => {
     feather.replace();
@@ -378,47 +439,58 @@ const [showDetailModal, setShowDetailModal] = useState(false);
 
 
       <div className="navbar-collapse collapse d-flex justify-content-start" style={{ marginLeft: '20px' }}>
-  <ul className="navbar-nav navbar-align d-flex align-items-center" style={{ width: '100%', maxWidth: '600px' }}>
-    <a href="#" className="list-group-item">
-      {/* <button type="button" className="btn btn-danger" id="download-btn">descargar aplicacion</button> */}
-    </a>
-    <div style={{ position: 'relative', width: '100%', maxWidth: '600px', margin: 'auto' }}>
-            <form className="d-flex w-100" onSubmit={(e) => e.preventDefault()}>
-                <input
-                    className="form-control me-2"
-                    style={{ backgroundColor: 'rgba(237, 208, 119, 0.527)', borderColor: 'black', flexGrow: 1 }}
-                    type="search"
-                    placeholder="Buscar Cliente"
-                    value={searchTerm}
-                    onChange={handleSearch}
-                />
-                <button className="btn btn-outline-success text-dark" type="submit">
-                    <i data-feather="search" className="text-dark"></i>
-                </button>
-            </form>
-            {filteredClients.length > 0 && (
-                <div className="search-pop text-dark font-weight-bold" style={{ position: 'absolute', top: '100%', left: 0, width: '100%', backgroundColor: 'white', boxShadow: '0px 4px 6px rgba(0,0,0,0.1)', borderRadius: '5px', zIndex: 100 }}>
-                    <ul className="list-group">
-                        {filteredClients.map(cliente => (
-                            <li key={cliente._id} className="list-group-item list-group-item-action">
-                                <Link to={`/cliente/${cliente._id}`} className="text-dark text-decoration-none">
-                                    {cliente.nombre}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+      <ul className="navbar-nav navbar-align d-flex align-items-center" style={{ width: '100%', maxWidth: '600px' }}>
+        <a href="#" className="list-group-item">
+          {/* Aquí puedes agregar el botón para descargar la app */}
+          {showInstallButton && (
+            <button 
+              type="button" 
+              className="btn btn-success" 
+              style={{ width: '150px' }} 
+              onClick={handleInstallClick}>
+              Instalar App
+            </button>
+          )}
+        </a>
+
+        <div style={{ position: 'relative', width: '100%', maxWidth: '600px', margin: 'auto' }}>
+          <form className="d-flex w-100" onSubmit={(e) => e.preventDefault()}>
+            <input
+              className="form-control me-2"
+              style={{ backgroundColor: 'rgba(237, 208, 119, 0.527)', borderColor: 'black', flexGrow: 1 }}
+              type="search"
+              placeholder="Buscar Cliente"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+            <button className="btn btn-outline-success text-dark" type="submit">
+              <i data-feather="search" className="text-dark"></i>
+            </button>
+          </form>
+          <div>
+     
+          </div>
+
+          {filteredClients.length > 0 && (
+            <div className="search-pop text-dark font-weight-bold" style={{ position: 'absolute', top: '100%', left: 0, width: '100%', backgroundColor: 'white', boxShadow: '0px 4px 6px rgba(0,0,0,0.1)', borderRadius: '5px', zIndex: 100 }}>
+              <ul className="list-group">
+                {filteredClients.map(cliente => (
+                  <li key={cliente._id} className="list-group-item list-group-item-action">
+                    <Link to={`/cliente/${cliente._id}`} className="text-dark text-decoration-none">
+                      {cliente.nombre}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
-    <li className="nav-item ms-3">
-      <button 
-      className="btn btn-danger" 
-      style={{ width: '150px' }} 
-      onClick={cerrarSesion}
-      >Cerrar sesión</button>
-    </li>
-  </ul>
-</div>
+
+        <li className="nav-item ms-3">
+          <button className="btn btn-danger" style={{ width: '150px' }} onClick={cerrarSesion}>Cerrar sesión</button>
+        </li>
+      </ul>
+    </div>
 
     </nav>
     <main className="content">
@@ -501,22 +573,23 @@ const [showDetailModal, setShowDetailModal] = useState(false);
     </div>
   </div>
   <div className="col-md-4">
-  <label htmlFor="validationCustom08" className="form-label card-title text-dark">
-    Ubicación
-  </label>
-  <div className="input-group">
-    <input
-      type="text"
-      className="form-control"
-      id="validationCustom08"
-      value={nombreUbicacion || ""}
-      placeholder="Haz clic en obtener ubicación"
-      readOnly
-    />
-    <button type="button" className="btn btn-primary" onClick={obtenerUbicacion}>
-      Obtener ubicación
-    </button>
-  </div>
+      <label htmlFor="validationCustom08" className="form-label card-title text-dark">
+        Ubicación
+      </label>
+      <div className="input-group">
+        <input
+          type="text"
+          className="form-control"
+          id="validationCustom08"
+          value={nombreUbicacion}
+          onChange={(e) => setNombreUbicacion(e.target.value)}  // Permite editar el texto
+          placeholder="Ingresa una ubicación"
+        />
+        <button type="button" className="btn btn-primary" onClick={obtenerUbicacion}>
+          Obtener ubicación
+        </button>
+      </div>
+
 
   {mostrarMapa && (
     <div
@@ -562,7 +635,7 @@ const [showDetailModal, setShowDetailModal] = useState(false);
 </div>
 
 
-  <div className="col-md-6">
+  <div className="col-md-4">
         <label htmlFor="validationCustom03" className="form-label card-title text-dark">
           Clave de tarjeta
         </label>
@@ -588,7 +661,7 @@ const [showDetailModal, setShowDetailModal] = useState(false);
       </div>
   <div className="col-md-3">
     <label htmlFor="validationCustom04" className="form-label card-title text-dark">
-      Fecha
+      Fecha de Ingreso
     </label>
     <input
       type="date"
@@ -596,8 +669,23 @@ const [showDetailModal, setShowDetailModal] = useState(false);
       style={{ borderRadius: "7px" }}
       id="validationCustom04"
       required
-      value={Fecha}
-      onChange={e=> setFecha(e.target.value)}
+      value={FechaIngreso}
+      onChange={e=> setFechaIngreso(e.target.value)}
+    />
+    <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
+  </div>
+  <div className="col-md-3">
+    <label htmlFor="validationCustom04" className="form-label card-title text-dark">
+      Fecha de Pago
+    </label>
+    <input
+      type="date"
+      className="form-control"
+      style={{ borderRadius: "7px" }}
+      id="validationCustom010"
+      required
+      value={FechaPago}
+      onChange={e=> setFechaPago(e.target.value)}
     />
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
   </div>

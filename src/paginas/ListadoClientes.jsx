@@ -15,6 +15,7 @@ import Mapa from '../components/Mapa';
 import imagenRegistro from '../assets/logoPrestamos-wBackground-removebg-preview.png';
 
 
+
 const ListadoClientes = () => {
   const { clientes, editarCliente, eliminarCliente } = useClientes();
   const [collapsed, setCollapsed] = useState(false);
@@ -22,6 +23,9 @@ const ListadoClientes = () => {
 
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalConfirmarVisible, setModalConfirmarVisible] = useState(false); // Estado para la confirmación de eliminación
+  const [clienteAEliminar, setClienteAEliminar] = useState(null); // Estado para almacenar el cliente a eliminar
+
   const [empresaSeleccionada, setEmpresaSeleccionada] = useState(''); // Estado para la empresa seleccionada
   const [clientesFiltrados, setClientesFiltrados] = useState(clientes); // Estado para los clientes filtrados
     const [mostrarMapa, setMostrarMapa] = useState(false);
@@ -33,6 +37,7 @@ const ListadoClientes = () => {
     console.log('Empresas obtenidas:', Empresas); // Verifica que las empresas se están obteniendo correctamente
     return [...new Set(Empresas)]; // Eliminar duplicados
   };
+  
 
   const empresasUnicas = useMemo(() => obtenerEmpresasUnicas(clientes), [clientes]);
 
@@ -68,22 +73,22 @@ const ListadoClientes = () => {
   };
 
   // Función para manejar la eliminación de clientes
-  const handleDeleteClick = async (id) => {
-    const msg = new SpeechSynthesisUtterance("¿Estás seguro de eliminar este cliente?");
-    msg.lang = "es-ES";
-    msg.volume = 1;
-    msg.rate = 1;
-    msg.pitch = 1;
+  const handleDeleteClick = (id) => {
+ 
 
-    window.speechSynthesis.speak(msg);
-
-    msg.onend = async () => {
-      const confirmDelete = window.confirm("¿Estás seguro de eliminar este cliente?");
-      if (confirmDelete) {
-        await eliminarCliente(id);
-      }
-    };
+      setClienteAEliminar(id); // Guardar el ID del cliente a eliminar
+      setModalConfirmarVisible(true); // Mostrar el modal de confirmación
+    
   };
+
+  const confirmarEliminacion = async () => {
+    await eliminarCliente(clienteAEliminar); // Eliminar cliente
+    setModalConfirmarVisible(false); // Cerrar el modal
+  };
+  const cancelarEliminacion = () => {
+    setModalConfirmarVisible(false); // Cerrar el modal sin eliminar
+  };
+
 
   // Función para manejar el cambio en el filtro por empresa
   const handleEmpresaChange = (event) => {
@@ -99,9 +104,129 @@ const ListadoClientes = () => {
       setClientesFiltrados(filtrados);
     }
   }, [empresaSeleccionada, clientes]);
+  <style>
+  {`
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  `}
+</style>
+
 
   return (
     <>
+<div
+  className={`modal fade ${modalConfirmarVisible ? 'show' : ''}`}
+  tabIndex="-1"
+  style={{
+    display: modalConfirmarVisible ? 'block' : 'none',
+    position: "fixed", // Esto asegura que el fondo cubra toda la pantalla
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Fondo opaco
+    zIndex: 9998, // Z-index del fondo
+  }}
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div
+    style={{
+      position: "fixed",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: 9999, // Z-index del modal
+    }}
+  >
+    <div
+      style={{
+        backgroundColor: "#fff3cd",
+        border: "1px solid #ffeeba",
+        borderRadius: "15px",
+        padding: "20px",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+        animation: "fadeInScale 0.3s ease-in-out",
+        fontFamily: "Arial, sans-serif",
+        width: "400px",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "10px",
+        }}
+      >
+        <i
+          data-feather="trash-2"
+          className="me-2"
+          style={{
+            fontSize: "28px",
+            marginRight: "12px",
+            color: "#856404",
+          }}
+        ></i>
+        <strong style={{ color: "#856404", fontSize: "18px" }}>
+          Confirmación de eliminación
+        </strong>
+      </div>
+      <div style={{ color: "#856404", marginBottom: "20px" }}>
+        ¿Estás seguro de eliminar este cliente? Esta acción no se puede deshacer.
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          gap: "10px",
+        }}
+      >
+        <button
+          onClick={cancelarEliminacion}
+          style={{
+            backgroundColor: "#ffeeba",
+            border: "none",
+            padding: "8px 14px",
+            borderRadius: "5px",
+            color: "#856404",
+            cursor: "pointer",
+            transition: "background-color 0.3s",
+          }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = "#ffd699")}
+          onMouseOut={(e) => (e.target.style.backgroundColor = "#ffeeba")}
+        >
+          Cancelar
+        </button>
+        <button
+          onClick={confirmarEliminacion}
+          style={{
+            backgroundColor: "#856404",
+            border: "none",
+            padding: "8px 14px",
+            borderRadius: "5px",
+            color: "#fff",
+            cursor: "pointer",
+            transition: "background-color 0.3s",
+          }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = "#6c4f23")}
+          onMouseOut={(e) => (e.target.style.backgroundColor = "#856404")}
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
     <div className='wrapper'>
     <nav className={`sidebar text-white js-sidebar ${collapsed ? "collapsed" : ""}`} data-simplebar>
   <div className="sidebar-content p-3">
@@ -267,12 +392,14 @@ const ListadoClientes = () => {
                         ))}
                       </select>
                       <div style={{ overflowX: "auto", width: "100%" }}>
-                          <table className="table table-hover my-0" style={{ minWidth: "700px" }}>
+                          <table className="table table-hover my-0" style={{ minWidth: "300px" }}>
                             <thead>
                               <tr>
                                 <th>Nombre</th>
                                 <th className="d-none d-xl-table-cell">Banco</th>
                                 <th className="d-none d-xl-table-cell">Empresa</th>
+                                <th className="d-none d-xl-table-cell">Fecha de Ingreso</th>
+                                <th className="d-none d-xl-table-cell">Fecha de Pago</th>
                                 <th>Prestamo</th>
                                 <th className="d-none d-md-table-cell">Numero de cuenta</th>
                                 <th>Ubicación</th>

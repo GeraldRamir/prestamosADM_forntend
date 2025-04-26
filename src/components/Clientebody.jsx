@@ -60,45 +60,55 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
         imagenUbicacion={imagenUbicacion}
       />
 
-      <tr>
-        <td onClick={handleOpenModal} style={{ cursor: "pointer" }}>
-          {cliente.nombre}
-        </td>
-        <td className="d-none d-xl-table-cell">{cliente.Banco}</td>
-        <td className="d-none d-xl-table-cell">{cliente.Empresa}</td>
-        <td>
-          <span className="badge bg-success">RD$ {cliente.ValorPrestamo}</span>
-        </td>
-        <td className="d-none d-md-table-cell">{cliente.NumeroCuenta}</td>
-        <td>
-          <span
-            style={{ cursor: "pointer", color: "blue" }}
-            onClick={() => openMap(cliente.ubicacion.lat, cliente.ubicacion.lng)}
-          >
-            {cliente.nombreUbicacion || "Ubicación no disponible"}
-          </span>
-        </td>
-        <td className="d-flex gap-2">
-          <button
-            onClick={() => onEdit(cliente)}
-            className="d-flex align-items-center gap-1 border-0 px-3 py-1 rounded bg-warning bg-opacity-25 text-warning fw-bold"
-            style={{ borderRadius: "8px" }}
-          >
-           <i data-feather="edit" className="me-2"></i>
-            <span className="bg-opacity-75">Editar</span>
-          </button>
+<tr>
+  <td onClick={handleOpenModal} style={{ cursor: "pointer" }}>
+    {cliente.nombre}
+  </td>
+  <td>{cliente.Banco}</td>
+  <td>{cliente.Empresa}</td>
+  <td style={{whiteSpace: "nowrap"}}>{cliente.FechaIngreso.slice(0, 10)}</td>
+  <td style={{whiteSpace: "nowrap"}}>{cliente.FechaPago.slice(0, 10)}</td>
+  <td>
+    <span className="badge bg-success">RD$ {cliente.ValorPrestamo}</span>
+  </td>
+  <td className="d-none d-md-table-cell">{cliente.NumeroCuenta}</td>
+  <td>
+    <span
+      style={{
+        cursor: "pointer",
+        color: "blue",
+        textDecoration: "underline",
+        whiteSpace: "nowrap"
+      }}
+      onClick={() => openMap(cliente.ubicacion.lat, cliente.ubicacion.lng)}
+    >
+      {cliente.nombreUbicacion && !cliente.nombreUbicacion.includes('state') 
+        ? cliente.nombreUbicacion 
+        : "Ubicación no disponible"
+      }
+    </span>
+  </td>
+  <td className="d-flex gap-2">
+    <button
+      onClick={() => onEdit(cliente)}
+      className="d-flex align-items-center gap-1 border-0 px-3 py-1 rounded bg-warning bg-opacity-25 text-warning fw-bold"
+    >
+      <i data-feather="edit" className="me-2"></i>
+      <span className="bg-opacity-75">Editar</span>
+    </button>
 
-          <button
-            onClick={() => onDelete(cliente._id)}
-            className="d-flex align-items-center gap-1 border-0 px-3 py-1 rounded bg-danger bg-opacity-25 text-danger fw-bold"
-            style={{ borderRadius: "8px" }}
-          >
-           <i data-feather="trash" className="me-2"></i>
-            Eliminar
-          </button>
-        </td>
+    <button
+      onClick={() => onDelete(cliente._id)}
+      className="d-flex align-items-center gap-1 border-0 px-3 py-1 rounded bg-danger bg-opacity-25 text-danger fw-bold"
+    >
+      <i data-feather="trash" className="me-2"></i>
+      Eliminar
+    </button>
+  </td>
+</tr>
 
-      </tr>
+
+
 
       <PagosModal
         isOpen={modalOpen}
