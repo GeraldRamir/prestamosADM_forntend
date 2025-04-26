@@ -77,22 +77,17 @@ useEffect(() => {
     setShowInstallButton(true);
   };
 
-  const handleAppInstalled = () => {
-    console.log("App instalada o desinstalada");
-    setShowInstallButton(false); // Oculta el botón si ya está instalada
-  };
-
+  // Detecta si la app ya está instalada
   if (window.matchMedia('(display-mode: standalone)').matches) {
-    // La app está instalada, no mostrar el botón
+    // La app está instalada
     setShowInstallButton(false);
   } else {
+    // La app no está instalada, muestra el botón
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
   }
 
   return () => {
     window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.removeEventListener('appinstalled', handleAppInstalled);
   };
 }, []);
 

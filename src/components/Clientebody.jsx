@@ -66,8 +66,13 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
   </td>
   <td>{cliente.Banco}</td>
   <td>{cliente.Empresa}</td>
-  <td style={{whiteSpace: "nowrap"}}>{cliente.FechaIngreso.slice(0, 10)}</td>
-  <td style={{whiteSpace: "nowrap"}}>{cliente.FechaPago.slice(0, 10)}</td>
+  <td style={{ whiteSpace: "nowrap" }}>
+  {cliente.FechaIngreso ? new Date(cliente.FechaIngreso).toISOString().slice(0, 10) : "Fecha no disponible"}
+</td>
+<td style={{ whiteSpace: "nowrap" }}>
+  {cliente.FechaPago ? new Date(cliente.FechaPago).toISOString().slice(0, 10) : "Fecha no disponible"}
+</td>
+
   <td>
     <span className="badge bg-success">RD$ {cliente.ValorPrestamo}</span>
   </td>
