@@ -38,10 +38,10 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
+            urlPattern: /\/api\//,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'image-cache',
+              cacheName: 'api-cache',
               expiration: {
                 maxEntries: 20,
                 maxAgeSeconds: 60 * 60 * 24 * 30,
@@ -69,17 +69,17 @@ export default defineConfig({
             },
           },
           // Aquí agregamos la caché para las solicitudes a la API
-          {
-            urlPattern: /\/api\//,  // Ajusta esta URL a tu endpoint de API
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              expiration: {
-                maxEntries: 20,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 días de caché
-              },
-            },
-          },
+          // {
+          //   urlPattern: /\/api\//,  // Ajusta esta URL a tu endpoint de API
+          //   handler: 'NetworkFirst',
+          //   options: {
+          //     cacheName: 'api-cache',
+          //     expiration: {
+          //       maxEntries: 20,
+          //       maxAgeSeconds: 60 * 60 * 24 * 7, // 7 días de caché
+          //     },
+          //   },
+          // },
         ],
       },
       manifest: {
