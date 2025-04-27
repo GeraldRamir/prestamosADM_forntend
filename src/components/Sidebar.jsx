@@ -3,7 +3,7 @@ import "../styles/clases.css"
 import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import feather from 'feather-icons';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -66,43 +66,37 @@ const Sidebar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
 const [showDetailModal, setShowDetailModal] = useState(false);
-const [deferredPrompt, setDeferredPrompt] = useState(null);
-const [showInstallButton, setShowInstallButton] = useState(false);
+const [showInstallButton, setShowInstallButton] = useState(true);  // Mostrar el botón siempre
+const [deferredPrompt, setDeferredPrompt] = useState(null);  // Guardar el evento para instalar
+const deferredPromptRef = useRef(null);
 
 useEffect(() => {
   const handleBeforeInstallPrompt = (e) => {
     console.log("beforeinstallprompt disparado ✅");
-    e.preventDefault();
-    setDeferredPrompt(e);
+    e.preventDefault();  // Prevenir la instalación automática
+    deferredPromptRef.current = e;  // Guardamos el evento en la ref
+    setDeferredPrompt(e);  // Actualizamos el estado
     setShowInstallButton(true);
   };
 
-  // Detecta si la app ya está instalada
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    // La app está instalada
-    setShowInstallButton(false);
-  } else {
-    // La app no está instalada, muestra el botón
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-  }
+  window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
   return () => {
-    window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
   };
 }, []);
 
-
-
 const handleInstallClick = async () => {
   if (deferredPrompt) {
-    deferredPrompt.prompt();
+    deferredPrompt.prompt();  // Mostrar el diálogo de instalación
     const { outcome } = await deferredPrompt.userChoice;
     console.log(`El usuario eligió: ${outcome}`);
-    setDeferredPrompt(null);
-    setShowInstallButton(false);
+    setShowInstallButton(false);  // Ocultar el botón después de que se haga la elección
+    setDeferredPrompt(null);  // Limpiar la referencia
   }
 };
-
+  
+  
   
   useEffect(() => {
     if (clientes.length > 0) {
@@ -197,6 +191,12 @@ const handleInstallClick = async () => {
       });
     }
   };
+  // useEffect(() => {
+  //   // Temporizador que fuerza la visualización del botón después de 2 segundos (solo para depuración)
+  //   setTimeout(() => {
+  //     setShowInstallButton(true);
+  //   }, 2000);
+  // }, []);
   
   // Función para obtener el nombre de la ubicación mediante reverse geocoding
   const obtenerNombreUbicacion = async (lat, lng) => {
@@ -265,10 +265,11 @@ const handleInstallClick = async () => {
     ) : null;
   };
   useEffect(() => {
-    if (ubicacion) {
-      setMostrarMapa(true); // Mostrar el mapa si hay una ubicación
+    if (ubicacion && mostrarMapa) { // Mostrar el mapa solo si `mostrarMapa` es verdadero
+      setMostrarMapa(true);
     }
-  }, [ubicacion]);
+  }, [ubicacion, mostrarMapa]);
+  
 
   useEffect(() => {
     const savedEvents = JSON.parse(localStorage.getItem('events'));
@@ -437,15 +438,19 @@ const handleInstallClick = async () => {
       <ul className="navbar-nav navbar-align d-flex align-items-center" style={{ width: '100%', maxWidth: '600px' }}>
         <a href="#" className="list-group-item">
           {/* Aquí puedes agregar el botón para descargar la app */}
-          {showInstallButton && (
-            <button 
-              type="button" 
-              className="btn btn-success" 
-              style={{ width: '150px' }} 
-              onClick={handleInstallClick}>
-              Instalar App
-            </button>
-          )}
+          <div>
+      {showInstallButton && (
+        <button
+          type="button"
+          className="btn btn-success"
+          onClick={handleInstallClick}
+        >
+          Instalar App
+        </button>
+      )}
+    </div>
+{console.log('showInstallButton:', showInstallButton)}  {/* Verifica si el estado es verdadero */}
+
         </a>
 
         <div style={{ position: 'relative', width: '100%', maxWidth: '600px', margin: 'auto' }}>

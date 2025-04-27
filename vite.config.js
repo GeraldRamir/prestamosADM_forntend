@@ -13,15 +13,16 @@ export default defineConfig({
         'logo-128.png',
         'logo-144.png',
         'logo-152.png',
-        'img/loco-192.png'
+        'loco-192.png'
       ],
       injectRegister: 'auto',
       devOptions: {
-        enabled: false // Desactiva el PWA en desarrollo
+        enabled: true // Desactiva el PWA en desarrollo
       },
       workbox: {
         cacheId: 'prestamos-app-v8',
         globPatterns: ['**/*.{js,css,html,png,webmanifest}'],
+
         maximumFileSizeToCacheInBytes: 5000000,
         runtimeCaching: [
           {
@@ -93,9 +94,9 @@ export default defineConfig({
             sizes: '152x152',
           },
           {
-            src: '/logo-192.png',
+            src: '/logo-196.png',
             type: 'image/png',
-            sizes: '192x192',
+            sizes: '196x196',
           },
         ],
       },
