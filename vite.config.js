@@ -68,6 +68,18 @@ export default defineConfig({
               },
             },
           },
+          // Aquí agregamos la caché para las solicitudes a la API
+          {
+            urlPattern: /\/api\//,  // Ajusta esta URL a tu endpoint de API
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              expiration: {
+                maxEntries: 20,
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 días de caché
+              },
+            },
+          },
         ],
       },
       manifest: {
@@ -105,9 +117,9 @@ export default defineConfig({
             sizes: '152x152',
           },
           {
-            src: '/logo-192.png',
+            src: '/logo-196.png',
             type: 'image/png',
-            sizes: '192x192',
+            sizes: '196x196',
           },
         ],
       },
