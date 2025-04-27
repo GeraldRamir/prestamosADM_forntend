@@ -20,7 +20,7 @@ export default defineConfig({
         enabled: false, // Habilitar PWA también en desarrollo
       },
       workbox: {
-        cacheId: 'prestamos-app-v4',
+        cacheId: 'prestamos-app-v3',
         globPatterns: [
           '**/*.{js,css,html,png,webmanifest,jsx,ico,svg}', // Añadido .ico y .svg
         ],
@@ -38,7 +38,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/, // Imágenes con extensión svg
             handler: 'CacheFirst',
             options: {
               cacheName: 'image-cache',
@@ -125,7 +125,7 @@ export default defineConfig({
       },
       // Inyectar el archivo sw.js personalizado
       inject: {
-        sw: './public/sw.js', // Ruta del service worker personalizado dentro de la carpeta public
+        sw: '/sw.js', // Ruta del service worker personalizado dentro de la carpeta public
       },
     }),
   ],
