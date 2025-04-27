@@ -1,7 +1,7 @@
 {
-  "name": "Prestamos-jaa",
-  "short_name": "PJA",
-  "start_url": ".",
+  "name": "Prestamos-ja",
+  "short_name": "admPrestamos",
+  "start_url": "/",
   "display": "standalone", 
   "background_color": "#658c78",
   "theme_color": "#658c78",

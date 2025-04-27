@@ -8,28 +8,41 @@ if(!self.define){let e,i={};const s=(s,r)=>(s=new URL(s+".js",r).href,i[s]||new 
     ,{url:"logo-120.png",revision:"cdcc20c675079eeec6c76bd658711f37"}
     ,{url:"logo-14.png",revision:"bb8918efce28ff513efebba057b51602"}
     ,{url:"manifest.webmanifest",revision:"9b1eabb05409398ba5d85bb2389b16cb"}
-    ,{url:"../src/components/Sidebar.jsx",revision:null}
-    ,{url:"../src/components/PagosModal.jsx",revision:null}
-    ,{url:"../src/components/Clientebody.jsx",revision:null}
-    ,{url:"../src/components/ModalEditar.jsx",revision:null}
-    ,{url:"../src/context/AuthProvider.jsx",revision:null}
-    ,{url:"../src/context/ClientesProvider.jsx",revision:null}
-    ,{url:"../src/context/PagosProvider.jsx",revision:null}
-    ,{url:"../src/hooks/useAuth.jsx",revision:null}
-    ,{url:"../src/hooks/useClientes.jsx",revision:null}
-    ,{url:"../src/hooks/usePagos.jsx",revision:null}
-    ,{url:"../src/paginas/Dashboard.jsx",revision:null}
-    ,{url:"../src/paginas/Registrar.jsx",revision:null}
-    ,{url:"../src/paginas/Login.jsx",revision:null}
-    ,{url:"../src/paginas/Consolidados.jsx",revision:null}
-    ,{url:"../src/paginas/ListadoClientes.jsx",revision:null}
-    ,{url:"../src/App.jsx",revision:null}
-    ,{url:"../src/main.jsx",revision:null}
-
-
   ],{}),e.cleanupOutdatedCaches(),e.registerRoute(new e.NavigationRoute(e.createHandlerBoundToURL("index.html")))}));
-self.addEventListener('activate', (event) => {
-    console.log("Service worker activado.");
-    event.waitUntil(self.clients.claim()); // Hace que el SW tome el control inmediatamente
-  });
+
+// Cacheo de respuestas de API
+self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
   
+  // Si la solicitud es para una API (por ejemplo, /api/)
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        // Si la respuesta está en caché, se usa
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        
+        // Si no está en caché, se obtiene del backend
+        return fetch(event.request).then((networkResponse) => {
+          // Si la respuesta es exitosa, la guardamos en caché para el futuro
+          if (networkResponse && networkResponse.ok) {
+            return caches.open('api-cache').then((cache) => {
+              cache.put(event.request, networkResponse.clone());
+              return networkResponse;
+            });
+          }
+          return networkResponse;
+        });
+      })
+    );
+  } else {
+    // Para otras solicitudes, simplemente se deja que el navegador maneje la solicitud
+    event.respondWith(fetch(event.request));
+  }
+});
+
+self.addEventListener('activate', (event) => {
+  console.log("Service worker activado.");
+  event.waitUntil(self.clients.claim()); // Hace que el SW tome el control inmediatamente
+});
