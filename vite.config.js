@@ -20,8 +20,8 @@ export default defineConfig({
         enabled: true // Desactiva el PWA en desarrollo
       },
       workbox: {
-        cacheId: 'prestamos-app-v9',
-        globPatterns: ['**/*.{js,css,html,png,webmanifest,jsx}'],
+        cacheId: 'prestamos-app-v10',
+        globPatterns: ['**/*.{js,css,html,png,webmanifest}'],
 
         maximumFileSizeToCacheInBytes: 5000000,
         runtimeCaching: [

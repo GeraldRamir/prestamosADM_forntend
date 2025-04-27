@@ -167,30 +167,30 @@ const handleInstallClick = async () => {
 
   // Obtener ubicación del cliente
   const obtenerUbicacion = async () => {
-
     if (nombreUbicacion.trim() === "") {
       console.error("Por favor, ingresa una ubicación");
       return;
     }
-
+  
     // Usamos el geocodificador de OpenStreetMap (Nominatim) para obtener latitud y longitud
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(nombreUbicacion)}`;
     const response = await fetch(url);
     const data = await response.json();
-
+  
     if (data && data.length > 0) {
       const { lat, lon } = data[0]; // Tomamos la primera coincidencia
       setUbicacion({ lat: parseFloat(lat), lng: parseFloat(lon) });
       setNombreUbicacion(data[0].display_name); // Actualizamos el campo con el nombre completo de la ubicación
-      // Aquí puedes agregar la lógica para mostrar la ubicación en el mapa
+      setMostrarMapa(true); // <--- FALTA ESTO para que aparezca el mapa
       console.log("Coordenadas:", lat, lon);
     } else {
       setAlerta({
-        msg: 'No se pude encontrar la ubicación',
+        msg: 'No se pudo encontrar la ubicación',
         error: true,
       });
     }
   };
+  
   // useEffect(() => {
   //   // Temporizador que fuerza la visualización del botón después de 2 segundos (solo para depuración)
   //   setTimeout(() => {

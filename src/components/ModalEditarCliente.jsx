@@ -4,27 +4,8 @@ import { Feather } from 'react-feather'; // Asegúrate de tener Feather Icons in
 
 const ModalEditarCliente = ({ cliente, cerrarModal }) => {
     const { editarCliente } = useClientes();
-    const formatDate = (date) => {
-        const d = new Date(date);
-        return d.toISOString().split('T')[0]; // Esto devuelve en formato YYYY-MM-DD
-    };
-    
-    const [formData, setFormData] = useState({
-        FechaPago: formatDate(cliente.FechaPago), // Asegúrate de pasar la fecha ya formateada
-        FechaIngreso: formatDate(cliente.FechaIngreso), // Asegúrate de pasar la fecha ya formateada
-        nombre: cliente.nombre,
-        Banco: cliente.Banco,
-        Empresa: cliente.Empresa,
-        ClaveTarjeta: cliente.ClaveTarjeta,
-        copiaCedula: cliente.copiaCedula,
-        NumeroCuenta: cliente.NumeroCuenta,
-        ValorPrestamo: cliente.ValorPrestamo,
-        Interes: cliente.Interes,
-        // Otros campos...
-        nombreUbicacion: cliente.nombreUbicacion || '', // Asegúrate de que la ubicación tenga un valor por defecto
-    });
-    console.log(formData)
-    
+    const [formData, setFormData] = useState(cliente);
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -38,27 +19,13 @@ const ModalEditarCliente = ({ cliente, cerrarModal }) => {
         cerrarModal();
     };
 
+    const FechaPagoModificada = formData.FechaPago.slice(0, 10);
+    const FechaIngresoModificada= formData.FechaIngreso.slice(0, 10);
+
 
     return (
-        
-        
         <div className="modal show d-block" style={{ background: "rgba(0,0,0,0.3)" }}>
-                {/* <style>
-    {`
-      @keyframes fadeInScale {
-        from {
-          opacity: 0;
-          transform: scale(0.95);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-    `}
-  </style> */}
-
-            <div
+          <div
                 style={{
                     position: "fixed",
                     top: "50%",
@@ -174,7 +141,7 @@ const ModalEditarCliente = ({ cliente, cerrarModal }) => {
                                     type="date"
                                     className="form-control rounded-3 border-light shadow-sm"
                                     name="FechaIngreso"
-                                    value={formData.FechaIngreso}
+                                    value={FechaIngresoModificada}
                                     onChange={handleChange}
                                     required
                                     style={{ paddingLeft: "25px" }}
@@ -193,7 +160,7 @@ const ModalEditarCliente = ({ cliente, cerrarModal }) => {
                                     type="date"
                                     className="form-control rounded-3 border-light shadow-sm"
                                     name="FechaPago"
-                                    value={formData.FechaPago}
+                                    value={FechaPagoModificada}
                                     onChange={handleChange}
                                     required
                                     style={{ paddingLeft: "25px" }}

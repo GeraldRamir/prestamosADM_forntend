@@ -1,93 +1,35 @@
-/**
- * Copyright 2018 Google Inc. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+if(!self.define){let e,i={};const s=(s,r)=>(s=new URL(s+".js",r).href,i[s]||new Promise((i=>{if("document"in self){const e=document.createElement("script");e.src=s,e.onload=i,document.head.appendChild(e)}else e=s,importScripts(s),i()})).then((()=>{let e=i[s];if(!e)throw new Error(`Module ${s} didn’t register its module`);return e})));self.define=(r,n)=>{const o=e||("document"in self?document.currentScript.src:"")||location.href;if(i[o])return;let c={};const t=e=>s(e,o),l={module:{uri:o},exports:c,require:t};i[o]=Promise.all(r.map((e=>l[e]||t(e)))).then((e=>(n(...e),c)))}}define(["./workbox-1117d62c"],(function(e){"use strict";self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute(
+  [{url:"assets/index-0NvcX52R.css",revision:null}
+    ,{url:"assets/index-Bt9sQ8my.js",revision:null}
+    ,{url:"index.html",revision:"1863e7065f81562b8c2476ada40f0ca1"}
+    ,{url:"index.js",revision:"f0379773547d0b95b656bf9f378a055c"}
+    ,{url:"registerSW.js",revision:"1872c500de691dce40960bb85481de07"}
+    ,{url:"service-worker.js",revision:"69487f3b64657ead8cc42ca98b93c9ab"}
+    ,{url:"logo-120.png",revision:"cdcc20c675079eeec6c76bd658711f37"}
+    ,{url:"logo-14.png",revision:"bb8918efce28ff513efebba057b51602"}
+    ,{url:"manifest.webmanifest",revision:"9b1eabb05409398ba5d85bb2389b16cb"}
+    ,{url:"../src/components/Sidebar.jsx",revision:null}
+    ,{url:"../src/components/PagosModal.jsx",revision:null}
+    ,{url:"../src/components/Clientebody.jsx",revision:null}
+    ,{url:"../src/components/ModalEditar.jsx",revision:null}
+    ,{url:"../src/context/AuthProvider.jsx",revision:null}
+    ,{url:"../src/context/ClientesProvider.jsx",revision:null}
+    ,{url:"../src/context/PagosProvider.jsx",revision:null}
+    ,{url:"../src/hooks/useAuth.jsx",revision:null}
+    ,{url:"../src/hooks/useClientes.jsx",revision:null}
+    ,{url:"../src/hooks/usePagos.jsx",revision:null}
+    ,{url:"../src/paginas/Dashboard.jsx",revision:null}
+    ,{url:"../src/paginas/Registrar.jsx",revision:null}
+    ,{url:"../src/paginas/Login.jsx",revision:null}
+    ,{url:"../src/paginas/Consolidados.jsx",revision:null}
+    ,{url:"../src/paginas/ListadoClientes.jsx",revision:null}
+    ,{url:"../src/App.jsx",revision:null}
+    ,{url:"../src/main.jsx",revision:null}
 
-// If the loader is already loaded, just stop.
-if (!self.define) {
-  let registry = {};
 
-  // Used for `eval` and `importScripts` where we can't get script URL by other means.
-  // In both cases, it's safe to use a global var because those functions are synchronous.
-  let nextDefineUri;
-
-  const singleRequire = (uri, parentUri) => {
-    uri = new URL(uri + ".js", parentUri).href;
-    return registry[uri] || (
-      
-        new Promise(resolve => {
-          if ("document" in self) {
-            const script = document.createElement("script");
-            script.src = uri;
-            script.onload = resolve;
-            document.head.appendChild(script);
-          } else {
-            nextDefineUri = uri;
-            importScripts(uri);
-            resolve();
-          }
-        })
-      
-      .then(() => {
-        let promise = registry[uri];
-        if (!promise) {
-          throw new Error(`Module ${uri} didn’t register its module`);
-        }
-        return promise;
-      })
-    );
-  };
-
-  self.define = (depsNames, factory) => {
-    const uri = nextDefineUri || ("document" in self ? document.currentScript.src : "") || location.href;
-    if (registry[uri]) {
-      // Module is already loading or loaded.
-      return;
-    }
-    let exports = {};
-    const require = depUri => singleRequire(depUri, uri);
-    const specialDeps = {
-      module: { uri },
-      exports,
-      require
-    };
-    registry[uri] = Promise.all(depsNames.map(
-      depName => specialDeps[depName] || require(depName)
-    )).then(deps => {
-      factory(...deps);
-      return exports;
-    });
-  };
-}
-define(['./workbox-1117d62c'], (function (workbox) { 'use strict';
-
-  self.skipWaiting();
-  workbox.clientsClaim();
-
-  /**
-   * The precacheAndRoute() method efficiently caches and responds to
-   * requests for URLs in the manifest.
-   * See https://goo.gl/S9QRab
-   */
-  workbox.precacheAndRoute([{
-    "url": "registerSW.js",
-    "revision": "3ca0b8505b4bec776b69afdba2768812"
-  }, {
-    "url": "index.html",
-    "revision": "0.0489vvls6n"
-  }], {});
-  workbox.cleanupOutdatedCaches();
-  workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
-    allowlist: [/^\/$/]
-  }));
-
-}));
-//# sourceMappingURL=sw.js.map
+  ],{}),e.cleanupOutdatedCaches(),e.registerRoute(new e.NavigationRoute(e.createHandlerBoundToURL("index.html")))}));
+self.addEventListener('activate', (event) => {
+    console.log("Service worker activado.");
+    event.waitUntil(self.clients.claim()); // Hace que el SW tome el control inmediatamente
+  });
+  
