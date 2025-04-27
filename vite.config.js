@@ -20,7 +20,7 @@ export default defineConfig({
         enabled: false, // Habilitar PWA también en desarrollo
       },
       workbox: {
-        cacheId: 'prestamos-app-v3',
+        cacheId: 'prestamos-app-v8',
         globPatterns: [
           '**/*.{js,css,html,png,webmanifest,jsx,ico,svg}', // Añadido .ico y .svg
         ],
