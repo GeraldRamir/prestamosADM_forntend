@@ -20,7 +20,7 @@ export default defineConfig({
         enabled: false, // Habilitar PWA también en desarrollo
       },
       workbox: {
-        cacheId: 'prestamos-app-v6',
+        cacheId: 'prestamos-app-v4',
         globPatterns: [
           '**/*.{js,css,html,png,webmanifest,jsx,ico,svg}', // Añadido .ico y .svg
         ],
@@ -38,10 +38,10 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\/api\//,
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'api-cache',
+              cacheName: 'image-cache',
               expiration: {
                 maxEntries: 20,
                 maxAgeSeconds: 60 * 60 * 24 * 30,
@@ -69,17 +69,17 @@ export default defineConfig({
             },
           },
           // Aquí agregamos la caché para las solicitudes a la API
-          // {
-          //   urlPattern: /\/api\//,  // Ajusta esta URL a tu endpoint de API
-          //   handler: 'NetworkFirst',
-          //   options: {
-          //     cacheName: 'api-cache',
-          //     expiration: {
-          //       maxEntries: 20,
-          //       maxAgeSeconds: 60 * 60 * 24 * 7, // 7 días de caché
-          //     },
-          //   },
-          // },
+          {
+            urlPattern: /\/api\//,  // Ajusta esta URL a tu endpoint de API
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              expiration: {
+                maxEntries: 20,
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 días de caché
+              },
+            },
+          },
         ],
       },
       manifest: {
@@ -122,6 +122,10 @@ export default defineConfig({
             sizes: '196x196',
           },
         ],
+      },
+      // Inyectar el archivo sw.js personalizado
+      inject: {
+        sw: './public/sw.js', // Ruta del service worker personalizado dentro de la carpeta public
       },
     }),
   ],
