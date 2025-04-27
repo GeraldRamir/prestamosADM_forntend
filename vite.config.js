@@ -22,7 +22,8 @@ export default defineConfig({
       workbox: {
         cacheId: 'prestamos-app-v8',
         globPatterns: [
-          '**/*.{js,css,html,png,webmanifest,jsx,ico,svg}', // Añadido .ico y .svg
+          '**/*.{js,css,html,png,webmanifest,jsx,ico,svg}',
+          '**/api/**', // Añadido .ico y .svg
         ],
         maximumFileSizeToCacheInBytes: 5000000,
         runtimeCaching: [
