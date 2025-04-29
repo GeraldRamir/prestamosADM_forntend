@@ -37,6 +37,7 @@ const Sidebar = () => {
   
   // Campos
   const [nombre, setNombre] = useState('');
+  const [telefono, setTelefono] = useState('');
   const [copiaCedula, setcopiaCedula] = useState('');
   const [Empresa, setEmpresa] = useState('');
   const [ClaveTarjeta, setClaveTarjeta] = useState('');
@@ -130,7 +131,7 @@ const handleInstallClick = async () => {
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes ].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes, telefono ].includes('')) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -144,7 +145,7 @@ const handleInstallClick = async () => {
       error: false,
     });
   
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, ubicacion, nombreUbicacion, Interes });
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, ubicacion, nombreUbicacion, Interes, telefono });
   
     form.classList.add('was-validated');
   };
@@ -525,11 +526,26 @@ const handleInstallClick = async () => {
     <div className="valid-feedback text-primary">Campo validado!</div>
   </div>
   <div className="col-md-4">
+    <label htmlFor="validationCustom011" className="form-label card-title text-dark">
+      Numero de telefono
+    </label>
+    <input
+      type="tel"
+      className="form-control"
+      style={{ borderRadius: "7px" }}
+      id="validationCustom011"
+      required
+      value={telefono}
+      onChange={e=> setTelefono(e.target.value)}
+    />
+    <div className="valid-feedback text-primary">Campo validado!</div>
+  </div>
+  <div className="col-md-4">
     <label htmlFor="validationCustom02" className="form-label card-title text-dark">
       Copia Cédula
     </label>
     <input
-      type="text"
+      type="number"
       className="form-control"
       style={{ borderRadius: "7px" }}
       id="validationCustom02"
@@ -544,7 +560,7 @@ const handleInstallClick = async () => {
       Interes
     </label>
     <input
-      type="text"
+      type="number"
       className="form-control"
       style={{ borderRadius: "7px" }}
       id="validationCustom09"
@@ -709,7 +725,7 @@ const handleInstallClick = async () => {
       Número de cuenta
     </label>
     <input
-      type="tel"
+      type="number"
       className="form-control"
       style={{ borderRadius: "7px" }}
       id="validationCustom06"

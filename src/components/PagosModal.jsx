@@ -5,12 +5,16 @@ import PagosContext from "../context/PagosProvider";
 import { HotTable } from "@handsontable/react";
 import Handsontable from "handsontable";
 import "handsontable/dist/handsontable.full.css";
+import Alerta from "./Alerta";
 
 const PagosModal = ({ isOpen, onClose, clienteId }) => {
   const { obtenerPagos, crearPago, editarPago } = useContext(PagosContext);
   const [pagosEditable, setPagosEditable] = useState([]);
   const [valorPrestamo, setValorPrestamo] = useState(0);
   const [interes, setInteres] = useState(0);
+  const [guardando, setGuardando] = useState(false);
+    const [alerta, setAlerta] = useState({});
+
   // const [Interes, setInteres] = useState(0);
   const handleDeleteRow = (index) => {
     setPagosEditable((prevPagos) => prevPagos.filter((_, i) => i !== index));
@@ -127,7 +131,10 @@ const PagosModal = ({ isOpen, onClose, clienteId }) => {
           capital: prevPagos.length ? prevPagos[prevPagos.length - 1].capital : valorPrestamo, 
           avance: 0,
           abono: 0,
-          intereses: prevPagos.length ? prevPagos[prevPagos.length - 1].intereses : interes,
+          intereses: prevPagos.length ? 
+          (interes / 100) * prevPagos[prevPagos.length - 1].capital 
+          : (interes / 100) * valorPrestamo,
+      
           total: 0,
           atrasos: 0,
           descuento: 0,
@@ -140,6 +147,14 @@ const PagosModal = ({ isOpen, onClose, clienteId }) => {
   
 
   const handleSave = async () => {
+    setGuardando(true); // Mostrar spinner
+    // <Alerta alerta={alerta}/>;
+    setAlerta({
+      msg: "Guardando cambios...",
+      error: false,
+    }); // Limpiar alerta antes de guardar
+
+
     try {
       console.log("Guardando cambios con los siguientes pagos:", pagosEditable);
   
@@ -149,36 +164,39 @@ const PagosModal = ({ isOpen, onClose, clienteId }) => {
         return;
       }
   
-      // Verifica que todos los pagos tengan un valor para `quincena`
       const pagosConFecha = pagosEditable.map((pago) => {
         if (!pago.quincena) {
-          pago.quincena = new Date().toISOString().split("T")[0]; // Asignar una fecha si falta
+          pago.quincena = new Date().toISOString().split("T")[0];
         }
         return pago;
       });
   
-      await Promise.all(
-        pagosConFecha.map(async (pago) => {
-          console.log("Guardando pago:", pago);
+      for (const pago of pagosConFecha) {
+        console.log("Guardando pago:", pago);
+        pago.total =
+          (Number(pago.capital) || 0) +
+          (Number(pago.avance) || 0) +
+          (Number(pago.abono) || 0) +
+          (Number(pago.intereses) || 0);
   
-          // Calculamos el total antes de guardar
-          pago.total = (Number(pago.capital) || 0) + (Number(pago.avance) || 0) + (Number(pago.abono) || 0) + (Number(pago.intereses) || 0);
-  
-          if (pago._id) {
-            await editarPago(clienteId, pago._id, pago);
-          } else {
-            await crearPago(pago);
-          }
-        })
-      );
+        if (pago._id) {
+          await editarPago(clienteId, pago._id, pago);
+        } else {
+          await crearPago(pago);
+        }
+      }
   
       toast.success("Pagos guardados correctamente");
       onClose();
     } catch (error) {
       toast.error("Error al guardar los pagos");
       console.error("Error al guardar pagos:", error);
+    } finally {
+      setGuardando(false); // Ocultar spinner
     }
   };
+  
+  
   // const handleColumnChange = (changes, source) => {
   //   if (source !== "loadData" && changes) {
   //     setPagosEditable((prevPagos) => {
@@ -212,84 +230,105 @@ const PagosModal = ({ isOpen, onClose, clienteId }) => {
   
   
   return (
-    <Modal show={isOpen} onHide={onClose} size="lg" centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Pagos del Cliente</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div style={{ maxHeight: "400px", overflowY: "auto", padding: "5px", borderRadius: "5px" }}>
-          <HotTable
-            data={[...pagosEditable, ...calcularTotales()]} // Aseguramos que siempre sea un arreglo
-            colHeaders={columnas.map((col) => col.title)}
-            columns={columnas}
-            rowHeaders={true}
-            licenseKey="non-commercial-and-evaluation"
-            afterChange={(changes, source) => {
-              if (Array.isArray(changes) && source !== 'loadData') {
-                setPagosEditable((prevPagos) => {
-                  const updatedPagos = [...prevPagos];
-            
-                  changes.forEach(([row, prop, oldVal, newVal]) => {
-                    if (row >= updatedPagos.length) return;
-            
-                    const pago = { ...updatedPagos[row] };
-            
-                    if (prop === "avance") {
-                      const avance = Number(newVal) || 0;
-                      const oldAvance = Number(oldVal) || 0;
-                      pago.capital += avance - oldAvance;
-                    }
-            
-                    if (prop === "abono") {
-                      const abono = Number(newVal) || 0;
-                      const oldAbono = Number(oldVal) || 0;
-                      pago.capital -= abono - oldAbono;
-                    }
-            
-                    pago[prop] = newVal;
-                    updatedPagos[row] = pago;
-                  });
-            
-                  return updatedPagos;
-                });
-              }
-            }}
-            
-            
-            
-            height={pagosEditable.length > 5 ? "auto" : "300px"}
-            stretchH="all"
-            dropdownMenu={true}
-            contextMenu={['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'make_read_only', 'copy', 'cut', 'paste']} // Menú contextual
-            manualColumnInsert={true}
-            manualColumnResize={true}
-            manualRowResize={true}
-            manualColumnMove={true}
-            filters={true}
-            manualRowMove={true}
-            manualColumnRemove={true}
-            manualRowRemove={true}
-            afterRemoveRow={(index, amount) => handleRowRemove(index, amount)}
-          
-
-            beforeColumnRemove={(index) => removeColumn(index)}
-
-          />
+    <>
+       <Alerta alerta={alerta}/>;
+      {guardando && (
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50" style={{ zIndex: 1055 }}>
+          <div className="text-center text-white">
+            <div className="spinner-border text-light" role="status" style={{ width: '3rem', height: '3rem' }}>
+              <span className="visually-hidden">Guardando...</span>
+            </div>
+            <div className="mt-2">Guardando pagos...</div>
+          </div>
         </div>
-        <Button variant="primary" onClick={addNewRow} className="mt-3">
-          Agregar Fila
-        </Button>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onClose}>
-          Cerrar
-        </Button>
-        <Button variant="primary" onClick={handleSave}>
-          Guardar Cambios
-        </Button>
-      </Modal.Footer>
-    </Modal>
+      )}
+  
+      <Modal show={isOpen} onHide={onClose} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Pagos del Cliente</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div style={{ maxHeight: "400px", overflowY: "auto", padding: "5px", borderRadius: "5px" }}>
+            <HotTable
+              data={[...pagosEditable, ...calcularTotales()]}
+              colHeaders={columnas.map((col) => col.title)}
+              columns={columnas}
+              rowHeaders={true}
+              licenseKey="non-commercial-and-evaluation"
+              afterChange={(changes, source) => {
+                if (Array.isArray(changes) && source !== 'loadData') {
+                  setPagosEditable((prevPagos) => {
+                    const updatedPagos = [...prevPagos];
+  
+                    changes.forEach(([row, prop, oldVal, newVal]) => {
+                      if (row >= updatedPagos.length) return;
+  
+                      const pago = { ...updatedPagos[row] };
+  
+                      if (prop === "avance") {
+                        const avance = Number(newVal) || 0;
+                        const oldAvance = Number(oldVal) || 0;
+                        pago.capital += avance - oldAvance;
+                      }
+  
+                      if (prop === "abono") {
+                        const abono = Number(newVal) || 0;
+                        const oldAbono = Number(oldVal) || 0;
+                        pago.capital -= abono - oldAbono;
+                      }
+  
+                      if (prop === "capital") {
+                        const capital = Number(newVal) || 0;
+                        pago.intereses = (interes / 100) * capital;
+                      }
+  
+                      pago[prop] = newVal;
+                      updatedPagos[row] = pago;
+                    });
+  
+                    return updatedPagos;
+                  });
+                }
+              }}
+              height={pagosEditable.length > 5 ? "auto" : "300px"}
+              stretchH="all"
+              dropdownMenu={true}
+              contextMenu={['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'make_read_only', 'copy', 'cut', 'paste']}
+              manualColumnInsert={true}
+              manualColumnResize={true}
+              manualRowResize={true}
+              manualColumnMove={true}
+              filters={true}
+              manualRowMove={true}
+              manualColumnRemove={true}
+              manualRowRemove={true}
+              afterRemoveRow={(index, amount) => handleRowRemove(index, amount)}
+              beforeColumnRemove={(index) => removeColumn(index)}
+            />
+          </div>
+          <Button variant="primary" onClick={addNewRow} className="mt-3">
+            Agregar Fila
+          </Button>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onClose} disabled={guardando}>
+            Cerrar
+          </Button>
+          <Button variant="primary" onClick={handleSave} disabled={guardando}>
+            {guardando ? (
+              <>
+                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Guardando...
+              </>
+            ) : (
+              "Guardar Cambios"
+            )}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
+  
 };
 
 export default PagosModal;

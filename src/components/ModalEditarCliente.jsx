@@ -1,21 +1,29 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import useClientes from "../hooks/useClientes";
-import { Feather } from 'react-feather'; // Asegúrate de tener Feather Icons instalados
+import feather from 'feather-icons';
 
 const ModalEditarCliente = ({ cliente, cerrarModal }) => {
-    const { editarCliente } = useClientes();
+    const { editarCliente, obtenerClientes } = useClientes();
     const [formData, setFormData] = useState(cliente);
-
+    
+    console.log(formData.nombreUbicacion)
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
     };
+    
 
-    const handleSubmit = async (e) => {
+      useEffect(() => {
+        feather.replace();
+      });
+
+      const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Datos a guardar:", formData); // 🔍
         await editarCliente(formData);
+        await obtenerClientes(); // 👈 vuelve a cargar todos los clientes
         cerrarModal();
     };
 
@@ -74,11 +82,7 @@ const ModalEditarCliente = ({ cliente, cerrarModal }) => {
                         <div className="mb-3">
                             <label className="form-label text-muted">Nombre</label>
                             <div className="d-flex align-items-center">
-                                <Feather
-                                    icon="user"
-                                    size={18}
-                                    style={{ color: "#ff6f00", marginRight: "10px" }}
-                                />
+                               <i data-feather="user" className="me-2"   style={{ color: "#ff6f00", marginRight: "10px" }}></i>
                                 <input
                                     type="text"
                                     className="form-control rounded-3 border-light shadow-sm"
@@ -93,11 +97,7 @@ const ModalEditarCliente = ({ cliente, cerrarModal }) => {
                         <div className="mb-3">
                             <label className="form-label text-muted">Banco</label>
                             <div className="d-flex align-items-center">
-                                <Feather
-                                    icon="credit-card"
-                                    size={18}
-                                    style={{ color: "#ff6f00", marginRight: "10px" }}
-                                />
+                               <i data-feather="briefcase" className="me-2"   style={{ color: "#ff6f00", marginRight: "10px" }}></i>
                                 <input
                                     type="text"
                                     className="form-control rounded-3 border-light shadow-sm"
@@ -112,11 +112,7 @@ const ModalEditarCliente = ({ cliente, cerrarModal }) => {
                         <div className="mb-3">
                             <label className="form-label text-muted">Empresa</label>
                             <div className="d-flex align-items-center">
-                                <Feather
-                                    icon="briefcase"
-                                    size={18}
-                                    style={{ color: "#ff6f00", marginRight: "10px" }}
-                                />
+                               <i data-feather="users" className="me-2"   style={{ color: "#ff6f00", marginRight: "10px" }}></i>
                                 <input
                                     type="text"
                                     className="form-control rounded-3 border-light shadow-sm"
@@ -132,11 +128,7 @@ const ModalEditarCliente = ({ cliente, cerrarModal }) => {
                         <div className="mb-3">
                             <label className="form-label text-muted">Fecha Ingreso</label>
                             <div className="d-flex align-items-center">
-                                <Feather
-                                    icon="mail"
-                                    size={18}
-                                    style={{ color: "#ff6f00", marginRight: "10px" }}
-                                />
+                               <i data-feather="calendar" className="me-2"   style={{ color: "#ff6f00", marginRight: "10px" }}></i>
                                 <input
                                     type="date"
                                     className="form-control rounded-3 border-light shadow-sm"
@@ -151,11 +143,7 @@ const ModalEditarCliente = ({ cliente, cerrarModal }) => {
                         <div className="mb-3">
                             <label className="form-label text-muted">Fecha de Pago</label>
                             <div className="d-flex align-items-center">
-                                <Feather
-                                    icon="phone"
-                                    size={18}
-                                    style={{ color: "#ff6f00", marginRight: "10px" }}
-                                />
+                               <i data-feather="calendar" className="me-2"   style={{ color: "#ff6f00", marginRight: "10px" }}></i>
                                 <input
                                     type="date"
                                     className="form-control rounded-3 border-light shadow-sm"
@@ -170,11 +158,7 @@ const ModalEditarCliente = ({ cliente, cerrarModal }) => {
                         <div className="mb-3">
                             <label className="form-label text-muted">Numero de cuenta</label>
                             <div className="d-flex align-items-center">
-                                <Feather
-                                    icon="phone"
-                                    size={18}
-                                    style={{ color: "#ff6f00", marginRight: "10px" }}
-                                />
+                               <i data-feather="minus-square" className="me-2"   style={{ color: "#ff6f00", marginRight: "10px" }}></i>
                                 <input
                                     type="number"
                                     className="form-control rounded-3 border-light shadow-sm"
@@ -189,20 +173,16 @@ const ModalEditarCliente = ({ cliente, cerrarModal }) => {
                         <div className="mb-3">
                             <label className="form-label text-muted">Ubicacion</label>
                             <div className="d-flex align-items-center">
-                                <Feather
-                                    icon="phone"
-                                    size={18}
-                                    style={{ color: "#ff6f00", marginRight: "10px" }}
-                                />
-                                <input
-                                    type="text"
-                                    className="form-control rounded-3 border-light shadow-sm"
-                                    name="ubicacion"
-                                    value={formData.nombreUbicacion}
-                                    onChange={handleChange}
-                                    required
-                                    style={{ paddingLeft: "25px" }}
-                                />
+                            <i data-feather="map-pin" className="me-2"   style={{ color: "#ff6f00", marginRight: "10px" }}></i>
+                               
+                            <input
+                            type="text"
+                            className="form-control rounded-3 border-light shadow-sm"
+                            name="nombreUbicacion"
+                            value={formData.nombreUbicacion}
+                            onChange={handleChange}
+                            />
+
                             </div>
                         </div>
 

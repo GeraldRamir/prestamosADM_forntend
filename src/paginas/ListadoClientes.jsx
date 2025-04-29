@@ -392,31 +392,43 @@ const ListadoClientes = () => {
                         ))}
                       </select>
                       <div style={{ overflowX: "auto", width: "100%" }}>
-                          <table className="table table-hover my-0" style={{ minWidth: "300px" }}>
-                            <thead>
-                              <tr>
-                                <th>Nombre</th>
-                                <th className="d-none d-xl-table-cell">Banco</th>
-                                <th className="d-none d-xl-table-cell">Empresa</th>
-                                <th className="d-none d-xl-table-cell">Fecha de Ingreso</th>
-                                <th className="d-none d-xl-table-cell">Fecha de Pago</th>
-                                <th>Prestamo</th>
-                                <th className="d-none d-md-table-cell">Numero de cuenta</th>
-                                <th>Ubicación</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {clientesFiltrados.map(cliente => (
-                                <Clientebody
-                                  key={cliente._id}
-                                  cliente={cliente}
-                                  onEdit={() => handleEditClick(cliente)}
-                                  onDelete={() => handleDeleteClick(cliente._id)}
-                                />
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
+                        <table
+                          className="table table-hover my-0"
+                          style={{
+                            minWidth: "1200px",
+                            borderCollapse: "separate",
+                            borderSpacing: "0 8px"
+                          }}
+                        >
+                          <thead style={{ backgroundColor: "#f8f9fa", position: "sticky", top: 0, zIndex: 1 }}>
+                            <tr>
+                              <th style={{ padding: "12px 24px" }}>Nombre</th>
+                              <th style={{ padding: "12px 24px" }}>Teléfono</th>
+                              <th style={{ padding: "12px 24px" }}>Copia de cédula</th>
+                              <th style={{ padding: "12px 24px" }}>Banco</th>
+                              <th style={{ padding: "12px 24px" }}>Clave de tarjeta</th>
+                              <th style={{ padding: "12px 24px" }}>Interés</th>
+                              <th style={{ padding: "12px 24px" }}>Empresa</th>
+                              <th style={{ padding: "12px 24px" }}>Fecha de Ingreso</th>
+                              <th style={{ padding: "12px 24px" }}>Fecha de Pago</th>
+                              <th style={{ padding: "12px 24px" }}>Préstamo</th>
+                              <th style={{ padding: "12px 24px" }}>Número de cuenta</th>
+                              <th style={{ padding: "12px 40px" }}>Ubicación</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {clientesFiltrados.map((cliente) => (
+                              <Clientebody
+                                key={cliente._id}
+                                cliente={cliente}
+                                onEdit={() => handleEditClick(cliente)}
+                                onDelete={() => handleDeleteClick(cliente._id)}
+                              />
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
 
 
 

@@ -9,6 +9,11 @@ export const ClientesProvider = ({ children }) => {
     const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
     const [clientesFiltrados, setClientesFiltrados] = useState([]);
     const [empresaSeleccionada, setEmpresaSeleccionada] = useState('');
+
+    useEffect(() => {
+        obtenerClientes(); // Llama a la función para obtener los clientes al cargar el componente
+    }, []); // El array vacío asegura que solo se ejecute una vez al montar el componente
+    
     useEffect(() => {
         if (empresaSeleccionada === '') {
             setClientesFiltrados(clientes); // Si no hay filtro, muestra todos los clientes
@@ -21,7 +26,6 @@ export const ClientesProvider = ({ children }) => {
 
 
     // Obtención de clientes al cargar el componente
-    useEffect(() => {
         const obtenerClientes = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -39,8 +43,7 @@ export const ClientesProvider = ({ children }) => {
             }
         };
     
-        obtenerClientes();
-    }, []); // Este useEffect solo se ejecuta una vez cuando el componente se monta
+
     
     // Función para guardar un nuevo cliente
     const guardarCliente = async (cliente) => {
@@ -122,6 +125,7 @@ export const ClientesProvider = ({ children }) => {
         <ClientesContext.Provider value={{
             clientes,
             clientesFiltrados, // Añadido
+            obtenerClientes,
             guardarCliente,
             eliminarCliente,
             editarCliente,
