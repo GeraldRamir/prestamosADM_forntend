@@ -681,14 +681,15 @@ const handleInstallClick = async () => {
       Fecha de Ingreso
     </label>
     <input
-      type="date"
-      className="form-control"
-      style={{ borderRadius: "7px" }}
-      id="validationCustom04"
-      required
-      value={FechaIngreso}
-      onChange={e=> setFechaIngreso(e.target.value)}
-    />
+  type="date"
+  className="form-control"
+  style={{ borderRadius: "7px" }}
+  id="validationCustom04"
+  required
+  value={FechaIngreso ? FechaIngreso.toString().split('T')[0] : ''}
+  onChange={e => setFechaIngreso(new Date(e.target.value))}
+/>
+
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
   </div>
   <div className="col-md-3">
@@ -696,14 +697,15 @@ const handleInstallClick = async () => {
       Fecha de Pago
     </label>
     <input
-      type="date"
-      className="form-control"
-      style={{ borderRadius: "7px" }}
-      id="validationCustom010"
-      required
-      value={FechaPago}
-      onChange={e=> setFechaPago(e.target.value)}
-    />
+  type="date"
+  className="form-control"
+  style={{ borderRadius: "7px" }}
+  id="validationCustom010"
+  required
+  value={FechaPago ? FechaPago.toString().split('T')[0] : ''}
+  onChange={e => setFechaPago(new Date(e.target.value))}
+/>
+
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
   </div>
   <div className="col-md-3">
