@@ -37,6 +37,7 @@ const Sidebar = () => {
   
   // Campos
   const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
   // const [telefono, setTelefono] = useState('');
   const [copiaCedula, setcopiaCedula] = useState('');
   const [Empresa, setEmpresa] = useState('');
@@ -131,7 +132,7 @@ const handleInstallClick = async () => {
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion, ValorPrestamo, Interes].some(campo => campo === '' || campo === null || campo === undefined)) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, apellido, Banco, NumeroCuenta, ubicacion, nombreUbicacion, ValorPrestamo, Interes].some(campo => campo === '' || campo === null || campo === undefined)) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -146,7 +147,7 @@ const handleInstallClick = async () => {
       error: false,
     });
   
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion,ValorPrestamo, Interes });
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, apellido, Banco, NumeroCuenta, ubicacion, nombreUbicacion,ValorPrestamo, Interes });
   
     form.classList.add('was-validated');
   };
@@ -527,6 +528,21 @@ const handleInstallClick = async () => {
     />
     <div className="valid-feedback text-primary">Campo validado!</div>
   </div>
+  <div className="col-md-4">
+    <label htmlFor="validationCustom011" className="form-label card-title text-dark">
+      Apellido
+    </label>
+    <input
+      type="text"
+      className="form-control"
+      style={{ borderRadius: "7px" }}
+      id="validationCustom011"
+      required
+      value={apellido}
+      onChange={e=> setApellido(e.target.value)}
+    />
+    <div className="valid-feedback text-primary">Campo validado!</div>
+  </div>
   {/* <div className="col-md-4">
     <label htmlFor="validationCustom011" className="form-label card-title text-dark">
       Numero de telefono
@@ -677,7 +693,7 @@ const handleInstallClick = async () => {
         </div>
         <div className="invalid-feedback">Por favor, ingrese una clave válida.</div>
       </div>
-  <div className="col-md-3">
+  {/* <div className="col-md-3">
     <label htmlFor="validationCustom04" className="form-label card-title text-dark">
       Fecha de Ingreso
     </label>
@@ -706,7 +722,7 @@ const handleInstallClick = async () => {
       onChange={e=> setFechaPago(e.target.value)}
     />
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
-  </div>
+  </div> */}
   <div className="col-md-3">
     <label htmlFor="validationCustom05" className="form-label card-title text-dark">
       Banco
