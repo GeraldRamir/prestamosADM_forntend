@@ -158,7 +158,7 @@ const handleInstallClick = async () => {
       NumeroCuenta,
       ValorPrestamo,
       Interes,
-      telefono,
+      telefono
     };
   
     // Solo agregamos los campos de ubicación si tienen contenido
