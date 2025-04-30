@@ -132,7 +132,7 @@ const handleInstallClick = async () => {
     const form = e.target;
   
     // Verificar que los campos obligatorios estén llenos, excluyendo 'ubicacion' y 'nombreUbicacion'
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, Interes, telefono].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, Interes, telefono, ubicacion, nombreUbicacion].includes('')) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios, excepto ubicación',
@@ -463,7 +463,7 @@ const handleInstallClick = async () => {
           className="btn btn-success"
           onClick={handleInstallClick}
         >
-          instala la aplicacion
+          app install
         </button>
       )}
     </div>
