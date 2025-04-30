@@ -128,10 +128,18 @@ const handleInstallClick = async () => {
   };
   
   const handleSubmit = (e) => {
+    console.log({
+      nombre,
+      telefono,
+      FechaIngreso,
+      FechaPago,
+      // el resto...
+    });
+    
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, Interes, telefono ].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, Interes, telefono, ubicacion, nombreUbicacion ].includes('')) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -447,7 +455,7 @@ const handleInstallClick = async () => {
           className="btn btn-success"
           onClick={handleInstallClick}
         >
-          Install the ap
+          Install la aplicacion
         </button>
       )}
     </div>
