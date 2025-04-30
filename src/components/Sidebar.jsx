@@ -131,11 +131,10 @@ const handleInstallClick = async () => {
     e.preventDefault();
     const form = e.target;
   
-    // Verificación de campos obligatorios (sin incluir ubicación)
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, Interes, telefono].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes, telefono ].includes('')) {
       e.stopPropagation();
       setAlerta({
-        msg: 'Todos los campos obligatorios deben llenarse (ubicación es opcional)',
+        msg: 'Todos los campos son obligatorios',
         error: true,
       });
       return;
@@ -145,31 +144,14 @@ const handleInstallClick = async () => {
       msg: 'Cliente registrado correctamente',
       error: false,
     });
+
   
-    // Construimos el objeto dinámicamente
-    const cliente = {
-      nombre,
-      copiaCedula,
-      Empresa,
-      ClaveTarjeta,
-      FechaIngreso,
-      FechaPago,
-      Banco,
-      NumeroCuenta,
-      ValorPrestamo,
-      Interes,
-      telefono
-    };
-  
-    // Solo agregamos los campos de ubicación si tienen contenido
-    if (ubicacion !== '') cliente.ubicacion = ubicacion;
-    if (nombreUbicacion !== '') cliente.nombreUbicacion = nombreUbicacion;
-  
-    guardarCliente(cliente);
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo,     ...(ubicacion !== '' && { ubicacion }),
+    ...(nombreUbicacion !== '' && { nombreUbicacion }), nombreUbicacion, Interes, telefono });
+
   
     form.classList.add('was-validated');
   };
-  
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -467,7 +449,7 @@ const handleInstallClick = async () => {
           className="btn btn-success"
           onClick={handleInstallClick}
         >
-          instal App
+          Instalar App
         </button>
       )}
     </div>
