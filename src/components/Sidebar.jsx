@@ -127,7 +127,7 @@ const handleInstallClick = async () => {
       setFilteredClients(results);
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
   
@@ -145,7 +145,7 @@ const handleInstallClick = async () => {
       error: false,
     });
   
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion,ValorPrestamo, Interes });
+    await guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion,ValorPrestamo, Interes });
   
     form.classList.add('was-validated');
   };
@@ -447,7 +447,7 @@ const handleInstallClick = async () => {
           className="btn btn-success"
           onClick={handleInstallClick}
         >
-          instala appp
+          instalaya
         </button>
       )}
     </div>

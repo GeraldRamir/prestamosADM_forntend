@@ -72,11 +72,11 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
         <td style={{ padding: "12px 24px" }}>{cliente.Empresa}</td>
 
         <td style={{ whiteSpace: "nowrap", padding: "12px 24px" }}>
-          {cliente.FechaIngreso ? cliente.FechaIngreso.toString(): "Fecha no disponible"}
+          {cliente.FechaIngreso ? new Date(cliente.FechaIngreso): "Fecha no disponible"}
         </td>
 
         <td style={{ whiteSpace: "nowrap", padding: "12px 24px" }}>
-          {cliente.FechaPago ? cliente.FechaPago.toString(): "Fecha no disponible"}
+          {cliente.FechaPago ? new Date(cliente.FechaPago): "Fecha no disponible"}
         </td>
 
 
