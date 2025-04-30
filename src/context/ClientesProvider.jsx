@@ -51,33 +51,38 @@ const obtenerClientes = async () => {
     
     // Función para guardar un nuevo cliente
   // Función para guardar un nuevo cliente
-const guardarCliente = async (cliente) => {
+  const guardarCliente = async (cliente) => {
     try {
-        console.log("📤 Cliente a guardar:", cliente); // Ver el cliente antes de enviarlo
-
-        const token = localStorage.getItem('token');
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            }
-        };
-
-        const { data } = await clienteAxios.post('/clientes', cliente, config);
-        console.log("✅ Cliente guardado:", data); // Ver respuesta después de guardar el cliente
-
-        setClientes(prevClientes => [...prevClientes, data]); // Actualiza la lista de clientes
-
-        // Luego de guardar el cliente, obtenemos los pagos
-        if (data._id) {
-            console.log("🔍 Obteniendo pagos para el cliente con ID:", data._id); // Ver el ID del cliente
-            obtenerPagos(data._id);
+      const token = localStorage.getItem('token');
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         }
-
+      };
+  
+      const { data } = await clienteAxios.post('/clientes', cliente, config);
+  
+      const clienteConId = {
+        ...cliente,
+        _id: data._id,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt
+      };
+  
+      setClientes(prev => [...prev, clienteConId]);
+  
+      if (data._id) {
+        obtenerPagos(data._id);
+      }
+  
+      console.log("✅ Cliente guardado localmente:", clienteConId);
+  
     } catch (error) {
-        console.error("❌ Error al guardar el cliente:", error); // Ver error si ocurre
+      console.error("❌ Error al guardar cliente:", error);
     }
-};
+  };
+  
 
     // Función para obtener los pagos de un cliente
     const obtenerPagos = async (clienteId) => {
