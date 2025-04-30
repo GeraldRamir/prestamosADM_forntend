@@ -131,11 +131,10 @@ const handleInstallClick = async () => {
     e.preventDefault();
     const form = e.target;
   
-    // Verificar que los campos obligatorios estén llenos, excluyendo 'ubicacion' y 'nombreUbicacion'
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, Interes, telefono, ubicacion, nombreUbicacion].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes, telefono ].includes('')) {
       e.stopPropagation();
       setAlerta({
-        msg: 'Todos los campos son obligatorios, excepto ubicación',
+        msg: 'Todos los campos son obligatorios',
         error: true,
       });
       return;
@@ -146,22 +145,7 @@ const handleInstallClick = async () => {
       error: false,
     });
   
-    // Al guardar el cliente, asignar valor null o vacío a ubicacion y nombreUbicacion si están vacíos
-    guardarCliente({
-      nombre,
-      copiaCedula,
-      Empresa,
-      ClaveTarjeta,
-      FechaIngreso,
-      FechaPago,
-      Banco,
-      NumeroCuenta,
-      ValorPrestamo,
-      ubicacion,
-      nombreUbicacion,
-      Interes,
-      telefono,
-    });
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, ubicacion, nombreUbicacion, Interes, telefono });
   
     form.classList.add('was-validated');
   };
@@ -463,7 +447,7 @@ const handleInstallClick = async () => {
           className="btn btn-success"
           onClick={handleInstallClick}
         >
-          app install
+          aplicacion
         </button>
       )}
     </div>
