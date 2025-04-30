@@ -146,7 +146,7 @@ const handleInstallClick = async () => {
     });
   
 
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, telefono, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacionEmpty,nombreUbicacionEmpty, ValorPrestamo,Interes, ubicacion, nombreUbicacion});
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, telefono, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo,Interes, ubicacion, nombreUbicacion});
   
     form.classList.add('was-validated');
   };
