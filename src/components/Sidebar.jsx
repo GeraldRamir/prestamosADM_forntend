@@ -131,7 +131,7 @@ const handleInstallClick = async () => {
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes, telefono ].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion, ValorPrestamo, Interes, telefono].includes('')) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -145,10 +145,28 @@ const handleInstallClick = async () => {
       error: false,
     });
   
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, ubicacion, nombreUbicacion, Interes, telefono });
+    // 🎯 Cliente formateado con parseo correcto de tipos
+    const clienteFormateado = {
+      nombre: String(nombre),
+      telefono: String(telefono),
+      copiaCedula: Number(copiaCedula),
+      Empresa: String(Empresa),
+      ClaveTarjeta: Number(ClaveTarjeta),
+      FechaIngreso: new Date(FechaIngreso),
+      FechaPago: new Date(FechaPago),
+      Banco: String(Banco),
+      NumeroCuenta: Number(NumeroCuenta),
+      ValorPrestamo: Number(ValorPrestamo),
+      Interes: Number(Interes),
+      ubicacion,           // ya es un objeto {lat, lng}
+      nombreUbicacion: String(nombreUbicacion),
+    };
+  
+    guardarCliente(clienteFormateado);
   
     form.classList.add('was-validated');
   };
+  
   
   useEffect(() => {
     if (navigator.geolocation) {
@@ -531,7 +549,7 @@ const handleInstallClick = async () => {
       Numero de telefono
     </label>
     <input
-      type="tel"
+      type="number"
       className="form-control"
       style={{ borderRadius: "7px" }}
       id="validationCustom011"
