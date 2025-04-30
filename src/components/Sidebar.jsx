@@ -154,8 +154,12 @@ const handleInstallClick = async () => {
       msg: 'Cliente registrado correctamente',
       error: false,
     });
-  
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, ubicacion, nombreUbicacion, Interes });
+
+    
+    const FechaIngresoMod = new Date(`${FechaIngreso}T00:00:00Z`);
+    const FechaPagoMod = new Date(`${FechaPago}T00:00:00Z`);
+    
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta,FechaIngresoMod, FechaPagoMod,  ubicacion, nombreUbicacion, Banco, NumeroCuenta, ValorPrestamo, Interes });
   
     form.classList.add('was-validated');
   };
@@ -669,7 +673,7 @@ const handleInstallClick = async () => {
       style={{ borderRadius: "7px" }}
       id="validationCustom04"
       required
-      value={FechaIngreso}
+      value={FechaIngresoMod}
       onChange={e=> setFechaIngreso(e.target.value)}
     />
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
@@ -684,7 +688,7 @@ const handleInstallClick = async () => {
       style={{ borderRadius: "7px" }}
       id="validationCustom010"
       required
-      value={FechaPago}
+      value={FechaPagoMod}
       onChange={e=> setFechaPago(e.target.value)}
     />
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
