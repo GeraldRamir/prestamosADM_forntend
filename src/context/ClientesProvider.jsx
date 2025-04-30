@@ -59,27 +59,28 @@ useEffect(() => {
     try {
       console.log("📤 Cliente a guardar:", cliente);
   
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       };
   
-      const { data } = await clienteAxios.post('/clientes', cliente, config);
+      const { data } = await clienteAxios.post("/clientes", cliente, config);
       console.log("✅ Cliente guardado:", data);
   
-      // Guardar el apellido en localStorage usando el ID del cliente como clave
-      localStorage.setItem(`apellidoCliente_${data._id}`, cliente.apellido); // Usamos el ID del cliente
+      // Guardar campos específicos en localStorage usando el ID del cliente como clave
+      localStorage.setItem(`telefonoCliente_${data._id}`, cliente.telefono);
+      localStorage.setItem(`fechaIngresoCliente_${data._id}`, cliente.FechaIngreso);
+      localStorage.setItem(`fechaPagoCliente_${data._id}`, cliente.FechaPago);
   
       // Agregar al estado de clientes
-      setClientes(prevClientes => [...prevClientes, data]);
+      setClientes((prevClientes) => [...prevClientes, data]);
   
       if (data._id) {
         obtenerPagos(data._id);
       }
-  
     } catch (error) {
       console.error("❌ Error al guardar el cliente:", error);
     }

@@ -65,8 +65,8 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
           {cliente.nombre}
         </td>
         <td style={{ padding: "12px 24px" }}>
-  {cliente.apellido || localStorage.getItem(`apellidoCliente_${cliente._id}`)}
-</td>
+          {cliente.telefono || localStorage.getItem(`telefonoCliente_${cliente._id}`)}
+        </td>
 
 
         {/* <td style={{ padding: "12px 24px" }}>{cliente.telefono}</td> */}
@@ -76,14 +76,13 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
         <td style={{ padding: "12px 24px" }}>{cliente.Interes}</td>
         <td style={{ padding: "12px 24px" }}>{cliente.Empresa}</td>
 
-        <td style={{ whiteSpace: "nowrap", padding: "12px 24px" }}>
-          {cliente.FechaIngreso ? cliente.FechaIngreso: ""}
+        <td style={{ padding: "12px 24px" }}>
+          {cliente.FechaIngreso || localStorage.getItem(`fechaIngresoCliente_${cliente._id}`)}
         </td>
-
-        <td style={{ whiteSpace: "nowrap", padding: "12px 24px" }}>
-          {cliente.FechaPago ? cliente.FechaPago: ""}
+        
+        <td style={{ padding: "12px 24px" }}>
+          {cliente.FechaPago || localStorage.getItem(`fechaPagoCliente_${cliente._id}`)}
         </td>
-
 
         <td style={{ padding: "12px 24px" }}>
           <span className="badge bg-success">RD$ {cliente.ValorPrestamo}</span>

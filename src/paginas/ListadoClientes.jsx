@@ -405,8 +405,7 @@ const ListadoClientes = () => {
                           <thead style={{ backgroundColor: "#f8f9fa", position: "sticky", top: 0, zIndex: 1 }}>
                             <tr>
                               <th style={{ padding: "12px 24px" }}>Nombre</th>
-                              <th style={{ padding: "12px 24px" }}>Apellido</th>
-                              {/* <th style={{ padding: "12px 24px" }}>Teléfono</th> */}
+                              <th style={{ padding: "12px 24px" }}>Teléfono</th>
                               <th style={{ padding: "12px 24px" }}>Copia de cédula</th>
                               <th style={{ padding: "12px 24px" }}>Banco</th>
                               <th style={{ padding: "12px 24px" }}>Clave de tarjeta</th>
