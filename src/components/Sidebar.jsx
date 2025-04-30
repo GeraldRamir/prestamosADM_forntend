@@ -141,7 +141,7 @@ const handleInstallClick = async () => {
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes ].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes ].includes('')) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -158,7 +158,7 @@ const handleInstallClick = async () => {
     
 
     
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta,FechaIngreso, FechaPago,  ubicacion, nombreUbicacion, Banco, NumeroCuenta, ValorPrestamo, Interes });
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, ubicacion, nombreUbicacion, Banco, NumeroCuenta, ValorPrestamo, Interes });
   
     form.classList.add('was-validated');
   };
