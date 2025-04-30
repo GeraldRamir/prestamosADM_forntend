@@ -37,7 +37,7 @@ const Sidebar = () => {
   
   // Campos
   const [nombre, setNombre] = useState('');
-  const [telefono, setTelefono] = useState('');
+  // const [telefono, setTelefono] = useState('');
   const [copiaCedula, setcopiaCedula] = useState('');
   const [Empresa, setEmpresa] = useState('');
   const [ClaveTarjeta, setClaveTarjeta] = useState('');
@@ -131,7 +131,7 @@ const handleInstallClick = async () => {
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion, ValorPrestamo, Interes, telefono].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes ].includes('')) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -145,28 +145,10 @@ const handleInstallClick = async () => {
       error: false,
     });
   
-    // 🎯 Cliente formateado con parseo correcto de tipos
-    const clienteFormateado = {
-      nombre: String(nombre),
-      telefono: String(telefono),
-      copiaCedula: Number(copiaCedula),
-      Empresa: String(Empresa),
-      ClaveTarjeta: Number(ClaveTarjeta),
-      FechaIngreso: new Date(FechaIngreso),
-      FechaPago: new Date(FechaPago),
-      Banco: String(Banco),
-      NumeroCuenta: Number(NumeroCuenta),
-      ValorPrestamo: Number(ValorPrestamo),
-      Interes: Number(Interes),
-      ubicacion,           // ya es un objeto {lat, lng}
-      nombreUbicacion: String(nombreUbicacion),
-    };
-  
-    guardarCliente(clienteFormateado);
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion,ValorPrestamo, Interes });
   
     form.classList.add('was-validated');
   };
-  
   
   useEffect(() => {
     if (navigator.geolocation) {
@@ -544,7 +526,7 @@ const handleInstallClick = async () => {
     />
     <div className="valid-feedback text-primary">Campo validado!</div>
   </div>
-  <div className="col-md-4">
+  {/* <div className="col-md-4">
     <label htmlFor="validationCustom011" className="form-label card-title text-dark">
       Numero de telefono
     </label>
@@ -558,7 +540,7 @@ const handleInstallClick = async () => {
       onChange={e=> setTelefono(e.target.value)}
     />
     <div className="valid-feedback text-primary">Campo validado!</div>
-  </div>
+  </div> */}
   <div className="col-md-4">
     <label htmlFor="validationCustom02" className="form-label card-title text-dark">
       Copia Cédula
