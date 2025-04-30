@@ -467,7 +467,7 @@ const handleInstallClick = async () => {
           className="btn btn-success"
           onClick={handleInstallClick}
         >
-          Install App
+          installl App
         </button>
       )}
     </div>
