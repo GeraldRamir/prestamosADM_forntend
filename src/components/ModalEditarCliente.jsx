@@ -27,9 +27,9 @@ const ModalEditarCliente = ({ cliente, cerrarModal }) => {
         cerrarModal();
     };
 
-    const FechaPagoModificada = formData.FechaPago.slice(0, 10);
-    const FechaIngresoModificada= formData.FechaIngreso.slice(0, 10);
-
+    const FechaPagoModificada = formData.FechaPago ? formData.FechaPago.slice(0, 10) : '';
+    const FechaIngresoModificada = formData.FechaIngreso ? formData.FechaIngreso.slice(0, 10) : '';
+    
 
     return (
         <div className="modal show d-block" style={{ background: "rgba(0,0,0,0.3)" }}>

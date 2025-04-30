@@ -24,9 +24,9 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
     if (lat && lng) {
       setUbicacionMapa({ lat, lng });
       setMostrarMapa(true); // Abre el mapa
-    } else {
-      alert("Ubicación no disponible.");
+      return
     }
+    
   };
     useEffect(() => {
       feather.replace(); // Reemplazar íconos de Feather después del renderizado
@@ -92,12 +92,13 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
               color: "blue",
               textDecoration: "underline",
             }}
-            onClick={() => openMap(cliente.ubicacion.lat, cliente.ubicacion.lng)}
+            onClick={() => openMap(cliente.ubicacion?.lat, cliente.ubicacion?.lng)}
           >
             {cliente.nombreUbicacion && !cliente.nombreUbicacion.includes('state') 
               ? cliente.nombreUbicacion 
               : "Ubicación no disponible"}
           </span>
+
         </td>
 
         <td style={{ padding: "12px 24px" }}>
@@ -133,8 +134,8 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
         eliminarPago={eliminarPago}
       />
     </>
-  );
-};
+  )
+}
 
 export default ClienteBody;
 

@@ -17,10 +17,11 @@ import imagenRegistro from '../assets/logoPrestamos-wBackground-removebg-preview
 
 
 const ListadoClientes = () => {
+  
   const { clientes, editarCliente, eliminarCliente } = useClientes();
   const [collapsed, setCollapsed] = useState(false);
   const { cerrarSesion } = useAuth();
-
+  
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalConfirmarVisible, setModalConfirmarVisible] = useState(false); // Estado para la confirmación de eliminación
@@ -40,6 +41,7 @@ const ListadoClientes = () => {
   
 
   const empresasUnicas = useMemo(() => obtenerEmpresasUnicas(clientes), [clientes]);
+  console.log("Clientes",clientes); // Imprime los datos de cliente para comprobar si hay un ";" extra
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
@@ -417,15 +419,22 @@ const ListadoClientes = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {clientesFiltrados.map((cliente) => (
-                              <Clientebody
-                                key={cliente._id}
-                                cliente={cliente}
-                                onEdit={() => handleEditClick(cliente)}
-                                onDelete={() => handleDeleteClick(cliente._id)}
-                              />
-                            ))}
+                            {clientesFiltrados && clientesFiltrados.length > 0 ? (
+                              clientesFiltrados.map((cliente) => (
+                                <Clientebody
+                                  key={cliente._id}
+                                  cliente={cliente}
+                                  onEdit={() => handleEditClick(cliente)}
+                                  onDelete={() => handleDeleteClick(cliente._id)}
+                                />
+                              ))
+                            ) : (
+                              <tr>
+                                <td colSpan="12" style={{ textAlign: 'center' }}>No se encontraron clientes.</td>
+                              </tr>
+                            )}
                           </tbody>
+
                         </table>
                       </div>
 
