@@ -72,12 +72,12 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
         <td style={{ padding: "12px 24px" }}>{cliente.Empresa}</td>
 
         <td style={{ whiteSpace: "nowrap", padding: "12px 24px" }}>
-  {cliente.FechaIngreso}
-</td>
+          {cliente.FechaIngreso}
+        </td>
 
-<td style={{ whiteSpace: "nowrap", padding: "12px 24px" }}>
-  {cliente.FechaPago}
-</td>
+        <td style={{ whiteSpace: "nowrap", padding: "12px 24px" }}>
+          {cliente.FechaPago}
+        </td>
 
 
         <td style={{ padding: "12px 24px" }}>
@@ -85,7 +85,7 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
         </td>
 
         <td style={{ padding: "12px 24px" }}>{cliente.NumeroCuenta}</td>
-
+ 
         <td style={{ padding: "12px 40px", whiteSpace: "nowrap" }}>
           <span
             style={{

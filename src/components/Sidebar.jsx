@@ -146,7 +146,7 @@ const handleInstallClick = async () => {
     });
   
      
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta,telefono, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo,     ...(ubicacion !== '' && { ubicacion }),
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, telefono, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo,     ...(ubicacion !== '' && { ubicacion }),
     ...(nombreUbicacion !== '' && { nombreUbicacion }), Interes});
   
     form.classList.add('was-validated');
@@ -448,7 +448,7 @@ const handleInstallClick = async () => {
           className="btn btn-success"
           onClick={handleInstallClick}
         >
-          Instalall app
+          Instala la App
         </button>
       )}
     </div>
