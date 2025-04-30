@@ -128,21 +128,14 @@ const handleInstallClick = async () => {
   };
   
   const handleSubmit = (e) => {
-    console.log({
-      nombre,
-      telefono,
-      FechaIngreso,
-      FechaPago,
-      // el resto...
-    });
-    
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, Interes, telefono, ubicacion, nombreUbicacion ].includes('')) {
+    // Verificar que los campos obligatorios estén llenos, excluyendo 'ubicacion' y 'nombreUbicacion'
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, Interes, telefono].includes('')) {
       e.stopPropagation();
       setAlerta({
-        msg: 'Todos los campos son obligatorios',
+        msg: 'Todos los campos son obligatorios, excepto ubicación',
         error: true,
       });
       return;
@@ -153,13 +146,26 @@ const handleInstallClick = async () => {
       error: false,
     });
   
-
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, Interes, ubicacion, nombreUbicacion, telefono });
-
-    
+    // Al guardar el cliente, asignar valor null o vacío a ubicacion y nombreUbicacion si están vacíos
+    guardarCliente({
+      nombre,
+      copiaCedula,
+      Empresa,
+      ClaveTarjeta,
+      FechaIngreso,
+      FechaPago,
+      Banco,
+      NumeroCuenta,
+      ValorPrestamo,
+      ubicacion: ubicacion || null,  // Si está vacío, se asigna null
+      nombreUbicacion: nombreUbicacion || null, // Lo mismo para nombreUbicacion
+      Interes,
+      telefono,
+    });
   
     form.classList.add('was-validated');
   };
+  
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
