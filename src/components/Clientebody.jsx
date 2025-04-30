@@ -64,7 +64,11 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
         <td onClick={handleOpenModal} style={{ cursor: "pointer", padding: "12px 24px" }}>
           {cliente.nombre}
         </td>
-        <td style={{ padding: "12px 24px" }}>{cliente.apellido}</td>
+        <td style={{ padding: "12px 24px" }}>
+  {cliente.apellido || localStorage.getItem(`apellidoCliente_${cliente._id}`)}
+</td>
+
+
         {/* <td style={{ padding: "12px 24px" }}>{cliente.telefono}</td> */}
         <td style={{ padding: "12px 24px" }}>{cliente.copiaCedula}</td>
         <td style={{ padding: "12px 24px" }}>{cliente.Banco}</td>
