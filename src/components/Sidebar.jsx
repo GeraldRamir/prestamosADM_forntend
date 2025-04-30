@@ -141,7 +141,7 @@ const handleInstallClick = async () => {
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion, ValorPrestamo, Interes].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes ].includes('')) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -154,28 +154,14 @@ const handleInstallClick = async () => {
       msg: 'Cliente registrado correctamente',
       error: false,
     });
-  
-    const fechaIngresoDate = new Date(`${FechaIngreso}T00:00:00Z`);
-    const fechaPagoDate = new Date(`${FechaPago}T00:00:00Z`);
-  
-    guardarCliente({
-      nombre,
-      copiaCedula,
-      Empresa,
-      ClaveTarjeta,
-      FechaIngreso: fechaIngresoDate,
-      FechaPago: fechaPagoDate,
-      ubicacion,
-      nombreUbicacion,
-      Banco,
-      NumeroCuenta,
-      ValorPrestamo,
-      Interes
-    });
+
+    
+
+    
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta,FechaIngreso, FechaPago,  ubicacion, nombreUbicacion, Banco, NumeroCuenta, ValorPrestamo, Interes });
   
     form.classList.add('was-validated');
   };
-  
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -681,15 +667,14 @@ const handleInstallClick = async () => {
       Fecha de Ingreso
     </label>
     <input
-  type="date"
-  className="form-control"
-  style={{ borderRadius: "7px" }}
-  id="validationCustom04"
-  required
-  value={FechaIngreso ? FechaIngreso.toString().split('T')[0] : ''}
-  onChange={e => setFechaIngreso(new Date(e.target.value))}
-/>
-
+      type="date"
+      className="form-control"
+      style={{ borderRadius: "7px" }}
+      id="validationCustom04"
+      required
+      value={FechaIngreso}
+      onChange={e=> setFechaIngreso(e.target.value)}
+    />
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
   </div>
   <div className="col-md-3">
@@ -697,15 +682,14 @@ const handleInstallClick = async () => {
       Fecha de Pago
     </label>
     <input
-  type="date"
-  className="form-control"
-  style={{ borderRadius: "7px" }}
-  id="validationCustom010"
-  required
-  value={FechaPago ? FechaPago.toString().split('T')[0] : ''}
-  onChange={e => setFechaPago(new Date(e.target.value))}
-/>
-
+      type="date"
+      className="form-control"
+      style={{ borderRadius: "7px" }}
+      id="validationCustom010"
+      required
+      value={FechaPago}
+      onChange={e=> setFechaPago(e.target.value? e.target.value: "Fecha supuesta a estar")}
+    />
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
   </div>
   <div className="col-md-3">
@@ -719,7 +703,7 @@ const handleInstallClick = async () => {
       id="validationCustom05"
       required
       value={Banco}
-      onChange={e=> setBanco(e.target.value)}
+      onChange={e=> setBanco(e.target.value? e.target.value: "Fecha supuesta a estar")}
     />
     <div className="invalid-feedback">Por favor, proporcione un valor válido.</div>
   </div>
