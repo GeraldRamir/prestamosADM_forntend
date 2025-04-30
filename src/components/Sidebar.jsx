@@ -127,11 +127,11 @@ const handleInstallClick = async () => {
       setFilteredClients(results);
   };
   
-  const handleSubmit = async (e) => {
+  const handleSubmit =(e) => {
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes ].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion, ValorPrestamo, Interes].some(campo => campo === '' || campo === null || campo === undefined)) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -139,13 +139,14 @@ const handleInstallClick = async () => {
       });
       return;
     }
+    
   
     setAlerta({
       msg: 'Cliente registrado correctamente',
       error: false,
     });
   
-    await guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion,ValorPrestamo, Interes });
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion,ValorPrestamo, Interes });
   
     form.classList.add('was-validated');
   };
@@ -447,7 +448,7 @@ const handleInstallClick = async () => {
           className="btn btn-success"
           onClick={handleInstallClick}
         >
-          instala la apppp
+          instala la ap
         </button>
       )}
     </div>
