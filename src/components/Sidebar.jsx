@@ -156,10 +156,9 @@ const handleInstallClick = async () => {
     });
 
     
-    const FechaIngresoMod = new Date(`${FechaIngreso}T00:00:00Z`);
-    const FechaPagoMod = new Date(`${FechaPago}T00:00:00Z`);
+
     
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta,FechaIngresoMod, FechaPagoMod,  ubicacion, nombreUbicacion, Banco, NumeroCuenta, ValorPrestamo, Interes });
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta,FechaIngreso, FechaPago,  ubicacion, nombreUbicacion, Banco, NumeroCuenta, ValorPrestamo, Interes });
   
     form.classList.add('was-validated');
   };
@@ -673,8 +672,8 @@ const handleInstallClick = async () => {
       style={{ borderRadius: "7px" }}
       id="validationCustom04"
       required
-      value={FechaIngresoMod}
-      onChange={e=> setFechaIngreso(e.target.value)}
+      value={FechaIngreso}
+      onChange={e=> setFechaIngreso(new Date(`${e.target.value}T00:00:00Z`))}
     />
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
   </div>
@@ -688,8 +687,8 @@ const handleInstallClick = async () => {
       style={{ borderRadius: "7px" }}
       id="validationCustom010"
       required
-      value={FechaPagoMod}
-      onChange={e=> setFechaPago(e.target.value)}
+      value={FechaPago}
+      onChange={e=> setFechaPago(new Date(`${e.target.value}T00:00:00Z`))}
     />
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
   </div>
