@@ -144,11 +144,10 @@ const handleInstallClick = async () => {
       msg: 'Cliente registrado correctamente',
       error: false,
     });
-
   
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo,     ...(ubicacion !== '' && { ubicacion }),
-    ...(nombreUbicacion !== '' && { nombreUbicacion }), Interes, telefono });
-
+     
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta,telefono, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo,     ...(ubicacion !== '' && { ubicacion }),
+    ...(nombreUbicacion !== '' && { nombreUbicacion }), Interes});
   
     form.classList.add('was-validated');
   };
@@ -449,7 +448,7 @@ const handleInstallClick = async () => {
           className="btn btn-success"
           onClick={handleInstallClick}
         >
-          Instalar App
+          Instala la App
         </button>
       )}
     </div>
