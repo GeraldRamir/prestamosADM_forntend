@@ -14,32 +14,7 @@ if(!self.define){let e,i={};const s=(s,r)=>(s=new URL(s+".js",r).href,i[s]||new 
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   
-  // Si la solicitud es para una API (por ejemplo, /api/)
-  if (url.pathname.startsWith('/api/')) {
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        // Si la respuesta está en caché, se usa
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        
-        // Si no está en caché, se obtiene del backend
-        return fetch(event.request).then((networkResponse) => {
-          // Si la respuesta es exitosa, la guardamos en caché para el futuro
-          if (networkResponse && networkResponse.ok) {
-            return caches.open('api-cache').then((cache) => {
-              cache.put(event.request, networkResponse.clone());
-              return networkResponse;
-            });
-          }
-          return networkResponse;
-        });
-      })
-    );
-  } else {
-    // Para otras solicitudes, simplemente se deja que el navegador maneje la solicitud
-    event.respondWith(fetch(event.request));
-  }
+
 });
 
 self.addEventListener('activate', (event) => {
