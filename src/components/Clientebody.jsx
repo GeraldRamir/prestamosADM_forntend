@@ -72,12 +72,13 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
         <td style={{ padding: "12px 24px" }}>{cliente.Empresa}</td>
 
         <td style={{ whiteSpace: "nowrap", padding: "12px 24px" }}>
-          {cliente.FechaIngreso ? cliente.FechaIngreso.slice(0, 10): "Fecha no disponible"}
-        </td>
+  {cliente.FechaIngreso ? new Date(cliente.FechaIngreso).toLocaleDateString('es-ES') : "Fecha no disponible"}
+</td>
 
-        <td style={{ whiteSpace: "nowrap", padding: "12px 24px" }}>
-          {cliente.FechaPago ? cliente.FechaPago.slice(0, 10) : "Fecha no disponible"}
-        </td>
+<td style={{ whiteSpace: "nowrap", padding: "12px 24px" }}>
+  {cliente.FechaPago ? new Date(cliente.FechaPago).toLocaleDateString('es-ES') : "Fecha no disponible"}
+</td>
+
 
         <td style={{ padding: "12px 24px" }}>
           <span className="badge bg-success">RD$ {cliente.ValorPrestamo}</span>
