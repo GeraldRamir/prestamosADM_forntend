@@ -24,9 +24,9 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
     if (lat && lng) {
       setUbicacionMapa({ lat, lng });
       setMostrarMapa(true); // Abre el mapa
-      return
+    } else {
+      alert("Ubicación no disponible.");
     }
-    
   };
     useEffect(() => {
       feather.replace(); // Reemplazar íconos de Feather después del renderizado
@@ -60,72 +60,52 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
         imagenUbicacion={imagenUbicacion}
       />
 
-      <tr style={{ borderBottom: "1px solid #dee2e6" }}>
-        <td onClick={handleOpenModal} style={{ cursor: "pointer", padding: "12px 24px" }}>
-          {cliente.nombre}
-        </td>
-        <td style={{ padding: "12px 24px" }}>
-          {cliente.telefono}
-        </td>
+<tr>
+  <td onClick={handleOpenModal} style={{ cursor: "pointer" }}>
+    {cliente.nombre}
+  </td>
+  <td>{cliente.Banco}</td>
+  <td>{cliente.Empresa}</td>
+  <td style={{whiteSpace: "nowrap"}}>{cliente.FechaIngreso.slice(0, 10)}</td>
+  <td style={{whiteSpace: "nowrap"}}>{cliente.FechaPago.slice(0, 10)}</td>
+  <td>
+    <span className="badge bg-success">RD$ {cliente.ValorPrestamo}</span>
+  </td>
+  <td className="d-none d-md-table-cell">{cliente.NumeroCuenta}</td>
+  <td>
+    <span
+      style={{
+        cursor: "pointer",
+        color: "blue",
+        textDecoration: "underline",
+        whiteSpace: "nowrap"
+      }}
+      onClick={() => openMap(cliente.ubicacion.lat, cliente.ubicacion.lng)}
+    >
+      {cliente.nombreUbicacion && !cliente.nombreUbicacion.includes('state') 
+        ? cliente.nombreUbicacion 
+        : "Ubicación no disponible"
+      }
+    </span>
+  </td>
+  <td className="d-flex gap-2">
+    <button
+      onClick={() => onEdit(cliente)}
+      className="d-flex align-items-center gap-1 border-0 px-3 py-1 rounded bg-warning bg-opacity-25 text-warning fw-bold"
+    >
+      <i data-feather="edit" className="me-2"></i>
+      <span className="bg-opacity-75">Editar</span>
+    </button>
 
-
-        {/* <td style={{ padding: "12px 24px" }}>{cliente.telefono}</td> */}
-        <td style={{ padding: "12px 24px" }}>{cliente.copiaCedula}</td>
-        <td style={{ padding: "12px 24px" }}>{cliente.Banco}</td>
-        <td style={{ padding: "12px 24px" }}>{cliente.ClaveTarjeta}</td>
-        <td style={{ padding: "12px 24px" }}>{cliente.Interes}</td>
-        <td style={{ padding: "12px 24px" }}>{cliente.Empresa}</td>
-
-        <td style={{ padding: "12px 24px" }}>
-          {cliente.FechaIngreso}
-        </td>
-        
-        <td style={{ padding: "12px 24px" }}>
-          {cliente.FechaPago}
-        </td>
-
-        <td style={{ padding: "12px 24px" }}>
-          <span className="badge bg-success">RD$ {cliente.ValorPrestamo}</span>
-        </td>
-
-        <td style={{ padding: "12px 24px" }}>{cliente.NumeroCuenta}</td>
- 
-        <td style={{ padding: "12px 40px", whiteSpace: "nowrap" }}>
-          <span
-            style={{
-              cursor: "pointer",
-              color: "blue",
-              textDecoration: "underline",
-            }}
-            onClick={() => openMap(cliente.ubicacion?.lat, cliente.ubicacion?.lng)}
-          >
-            {cliente.nombreUbicacion && !cliente.nombreUbicacion.includes('state') 
-              ? cliente.nombreUbicacion 
-              : "Ubicación no disponible"}
-          </span>
-
-        </td>
-
-        <td style={{ padding: "12px 24px" }}>
-          <div className="d-flex gap-2">
-            <button
-              onClick={() => onEdit(cliente)}
-              className="d-flex align-items-center gap-1 border-0 px-3 py-1 rounded bg-warning bg-opacity-25 text-warning fw-bold"
-            >
-              <i data-feather="edit" className="me-2"></i>
-              <span>Editar</span>
-            </button>
-
-            <button
-              onClick={() => onDelete(cliente._id)}
-              className="d-flex align-items-center gap-1 border-0 px-3 py-1 rounded bg-danger bg-opacity-25 text-danger fw-bold"
-            >
-              <i data-feather="trash" className="me-2"></i>
-              Eliminar
-            </button>
-          </div>
-        </td>
-      </tr>
+    <button
+      onClick={() => onDelete(cliente._id)}
+      className="d-flex align-items-center gap-1 border-0 px-3 py-1 rounded bg-danger bg-opacity-25 text-danger fw-bold"
+    >
+      <i data-feather="trash" className="me-2"></i>
+      Eliminar
+    </button>
+  </td>
+</tr>
 
 
 
@@ -139,9 +119,8 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
         eliminarPago={eliminarPago}
       />
     </>
-  )
-}
+  );
+};
 
 export default ClienteBody;
-
 

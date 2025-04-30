@@ -17,11 +17,10 @@ import imagenRegistro from '../assets/logoPrestamos-wBackground-removebg-preview
 
 
 const ListadoClientes = () => {
-  
   const { clientes, editarCliente, eliminarCliente } = useClientes();
   const [collapsed, setCollapsed] = useState(false);
   const { cerrarSesion } = useAuth();
-  
+
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalConfirmarVisible, setModalConfirmarVisible] = useState(false); // Estado para la confirmación de eliminación
@@ -41,7 +40,6 @@ const ListadoClientes = () => {
   
 
   const empresasUnicas = useMemo(() => obtenerEmpresasUnicas(clientes), [clientes]);
-  console.log("Clientes",clientes); // Imprime los datos de cliente para comprobar si hay un ";" extra
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
@@ -394,50 +392,31 @@ const ListadoClientes = () => {
                         ))}
                       </select>
                       <div style={{ overflowX: "auto", width: "100%" }}>
-                        <table
-                          className="table table-hover my-0"
-                          style={{
-                            minWidth: "1200px",
-                            borderCollapse: "separate",
-                            borderSpacing: "0 8px"
-                          }}
-                        >
-                          <thead style={{ backgroundColor: "#f8f9fa", position: "sticky", top: 0, zIndex: 1 }}>
-                            <tr>
-                              <th style={{ padding: "12px 24px" }}>Nombre</th>
-                              <th style={{ padding: "12px 24px" }}>Teléfono</th>
-                              <th style={{ padding: "12px 24px" }}>Copia de cédula</th>
-                              <th style={{ padding: "12px 24px" }}>Banco</th>
-                              <th style={{ padding: "12px 24px" }}>Clave de tarjeta</th>
-                              <th style={{ padding: "12px 24px" }}>Interés</th>
-                              <th style={{ padding: "12px 24px" }}>Empresa</th>
-                              <th style={{ padding: "12px 24px" }}>Fecha de Ingreso</th>
-                              <th style={{ padding: "12px 24px" }}>Fecha de Pago</th>
-                              <th style={{ padding: "12px 24px" }}>Préstamo</th>
-                              <th style={{ padding: "12px 24px" }}>Número de cuenta</th>
-                              <th style={{ padding: "12px 40px" }}>Ubicación</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {clientesFiltrados && clientesFiltrados.length > 0 ? (
-                              clientesFiltrados.map((cliente) => (
+                          <table className="table table-hover my-0" style={{ minWidth: "300px" }}>
+                            <thead>
+                              <tr>
+                                <th>Nombre</th>
+                                <th className="d-none d-xl-table-cell">Banco</th>
+                                <th className="d-none d-xl-table-cell">Empresa</th>
+                                <th className="d-none d-xl-table-cell">Fecha de Ingreso</th>
+                                <th className="d-none d-xl-table-cell">Fecha de Pago</th>
+                                <th>Prestamo</th>
+                                <th className="d-none d-md-table-cell">Numero de cuenta</th>
+                                <th>Ubicación</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {clientesFiltrados.map(cliente => (
                                 <Clientebody
                                   key={cliente._id}
                                   cliente={cliente}
                                   onEdit={() => handleEditClick(cliente)}
                                   onDelete={() => handleDeleteClick(cliente._id)}
                                 />
-                              ))
-                            ) : (
-                              <tr>
-                                <td colSpan="12" style={{ textAlign: 'center' }}>No se encontraron clientes.</td>
-                              </tr>
-                            )}
-                          </tbody>
-
-                        </table>
-                      </div>
-
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
 
 
 

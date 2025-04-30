@@ -13,17 +13,15 @@ export default defineConfig({
         'logo-128.png',
         'logo-144.png',
         'logo-152.png',
-        'logo-196.png', // Corregido
+        'img/loco-192.png'
       ],
       injectRegister: 'auto',
       devOptions: {
-        enabled: false, // Habilitar PWA también en desarrollo
+        enabled: false // Desactiva el PWA en desarrollo
       },
       workbox: {
-        cacheId: 'prestamos-app-v3',
-        globPatterns: [
-          '**/*.{js,css,html,png,webmanifest,jsx,ico,svg}'
-        ],
+        cacheId: 'prestamos-app-v8',
+        globPatterns: ['**/*.{js,css,html,png,webmanifest}'],
         maximumFileSizeToCacheInBytes: 5000000,
         runtimeCaching: [
           {
@@ -38,7 +36,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/, // Imágenes con extensión svg
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'image-cache',
@@ -58,33 +56,11 @@ export default defineConfig({
               },
             },
           },
-          {
-            urlPattern: /\.html$/,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'html-cache',
-              expiration: {
-                maxEntries: 10,
-              },
-            },
-          },
-          // Aquí agregamos la caché para las solicitudes a la API
-          {
-            urlPattern: /\/api\//,  // Ajusta esta URL a tu endpoint de API
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              expiration: {
-                maxEntries: 20,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 días de caché
-              },
-            },
-          },
         ],
       },
       manifest: {
-        name: 'Prestamos-ja',
-        short_name: 'Prestamos-ja',
+        name: 'Prestamos-jaa',
+        short_name: 'PJA',
         start_url: '/',
         display: 'standalone',
         background_color: '#658c78',
@@ -117,15 +93,11 @@ export default defineConfig({
             sizes: '152x152',
           },
           {
-            src: '/logo-196.png',
+            src: '/logo-192.png',
             type: 'image/png',
-            sizes: '196x196',
+            sizes: '192x192',
           },
         ],
-      },
-      // Inyectar el archivo sw.js personalizado
-      inject: {
-        sw: '/sw.js', // Ruta del service worker personalizado dentro de la carpeta public
       },
     }),
   ],

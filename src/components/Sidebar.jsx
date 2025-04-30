@@ -3,7 +3,7 @@ import "../styles/clases.css"
 import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import feather from 'feather-icons';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -37,8 +37,6 @@ const Sidebar = () => {
   
   // Campos
   const [nombre, setNombre] = useState('');
-  // const [apellido, setApellido] = useState('');
-  const [telefono, setTelefono] = useState('');
   const [copiaCedula, setcopiaCedula] = useState('');
   const [Empresa, setEmpresa] = useState('');
   const [ClaveTarjeta, setClaveTarjeta] = useState('');
@@ -68,37 +66,48 @@ const Sidebar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
 const [showDetailModal, setShowDetailModal] = useState(false);
-const [showInstallButton, setShowInstallButton] = useState(true);  // Mostrar el botón siempre
-const [deferredPrompt, setDeferredPrompt] = useState(null);  // Guardar el evento para instalar
-const deferredPromptRef = useRef(null);
+const [deferredPrompt, setDeferredPrompt] = useState(null);
+const [showInstallButton, setShowInstallButton] = useState(false);
 
 useEffect(() => {
   const handleBeforeInstallPrompt = (e) => {
     console.log("beforeinstallprompt disparado ✅");
-    e.preventDefault();  // Prevenir la instalación automática
-    deferredPromptRef.current = e;  // Guardamos el evento en la ref
-    setDeferredPrompt(e);  // Actualizamos el estado
+    e.preventDefault();
+    setDeferredPrompt(e);
     setShowInstallButton(true);
   };
 
-  window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+  const handleAppInstalled = () => {
+    console.log("App instalada o desinstalada");
+    setShowInstallButton(false); // Oculta el botón si ya está instalada
+  };
+
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    // La app está instalada, no mostrar el botón
+    setShowInstallButton(false);
+  } else {
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+  }
 
   return () => {
-    window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.removeEventListener('appinstalled', handleAppInstalled);
   };
 }, []);
 
+
+
 const handleInstallClick = async () => {
   if (deferredPrompt) {
-    deferredPrompt.prompt();  // Mostrar el diálogo de instalación
+    deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     console.log(`El usuario eligió: ${outcome}`);
-    setShowInstallButton(false);  // Ocultar el botón después de que se haga la elección
-    setDeferredPrompt(null);  // Limpiar la referencia
+    setDeferredPrompt(null);
+    setShowInstallButton(false);
   }
 };
-  
-  
+
   
   useEffect(() => {
     if (clientes.length > 0) {
@@ -128,11 +137,11 @@ const handleInstallClick = async () => {
       setFilteredClients(results);
   };
   
-  const handleSubmit =(e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, telefono, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion, ValorPrestamo, Interes].some(campo => campo === '' || campo === null || campo === undefined)) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes ].includes('')) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -140,18 +149,16 @@ const handleInstallClick = async () => {
       });
       return;
     }
-    
   
     setAlerta({
       msg: 'Cliente registrado correctamente',
       error: false,
     });
   
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, telefono, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion,ValorPrestamo, Interes });
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo, ubicacion, nombreUbicacion, Interes });
   
     form.classList.add('was-validated');
   };
-  
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -171,36 +178,30 @@ const handleInstallClick = async () => {
 
   // Obtener ubicación del cliente
   const obtenerUbicacion = async () => {
+
     if (nombreUbicacion.trim() === "") {
       console.error("Por favor, ingresa una ubicación");
       return;
     }
-  
+
     // Usamos el geocodificador de OpenStreetMap (Nominatim) para obtener latitud y longitud
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(nombreUbicacion)}`;
     const response = await fetch(url);
     const data = await response.json();
-  
+
     if (data && data.length > 0) {
       const { lat, lon } = data[0]; // Tomamos la primera coincidencia
       setUbicacion({ lat: parseFloat(lat), lng: parseFloat(lon) });
       setNombreUbicacion(data[0].display_name); // Actualizamos el campo con el nombre completo de la ubicación
-      setMostrarMapa(true); // <--- FALTA ESTO para que aparezca el mapa
+      // Aquí puedes agregar la lógica para mostrar la ubicación en el mapa
       console.log("Coordenadas:", lat, lon);
     } else {
       setAlerta({
-        msg: 'No se pudo encontrar la ubicación',
+        msg: 'No se pude encontrar la ubicación',
         error: true,
       });
     }
   };
-  
-  // useEffect(() => {
-  //   // Temporizador que fuerza la visualización del botón después de 2 segundos (solo para depuración)
-  //   setTimeout(() => {
-  //     setShowInstallButton(true);
-  //   }, 2000);
-  // }, []);
   
   // Función para obtener el nombre de la ubicación mediante reverse geocoding
   const obtenerNombreUbicacion = async (lat, lng) => {
@@ -269,11 +270,10 @@ const handleInstallClick = async () => {
     ) : null;
   };
   useEffect(() => {
-    if (ubicacion && mostrarMapa) { // Mostrar el mapa solo si `mostrarMapa` es verdadero
-      setMostrarMapa(true);
+    if (ubicacion) {
+      setMostrarMapa(true); // Mostrar el mapa si hay una ubicación
     }
-  }, [ubicacion, mostrarMapa]);
-  
+  }, [ubicacion]);
 
   useEffect(() => {
     const savedEvents = JSON.parse(localStorage.getItem('events'));
@@ -442,19 +442,15 @@ const handleInstallClick = async () => {
       <ul className="navbar-nav navbar-align d-flex align-items-center" style={{ width: '100%', maxWidth: '600px' }}>
         <a href="#" className="list-group-item">
           {/* Aquí puedes agregar el botón para descargar la app */}
-          <div>
-      {showInstallButton && (
-        <button
-          type="button"
-          className="btn btn-success"
-          onClick={handleInstallClick}
-        >
-          instalar aplicacion
-        </button>
-      )}
-    </div>
-{console.log('showInstallButton:', showInstallButton)}  {/* Verifica si el estado es verdadero */}
-
+          {showInstallButton && (
+            <button 
+              type="button" 
+              className="btn btn-success" 
+              style={{ width: '150px' }} 
+              onClick={handleInstallClick}>
+              Instalar App
+            </button>
+          )}
         </a>
 
         <div style={{ position: 'relative', width: '100%', maxWidth: '600px', margin: 'auto' }}>
@@ -515,7 +511,7 @@ const handleInstallClick = async () => {
           >
   <div className="col-md-4">
     <label htmlFor="validationCustom01" className="form-label card-title text-dark">
-      Nombre y apellidoss
+      Nombre y apellido
     </label>
     <input
       type="text"
@@ -528,42 +524,12 @@ const handleInstallClick = async () => {
     />
     <div className="valid-feedback text-primary">Campo validado!</div>
   </div>
-  {/* <div className="col-md-4">
-    <label htmlFor="validationCustom011" className="form-label card-title text-dark">
-      appellidosss
-    </label>
-    <input
-      type="text"
-      className="form-control"
-      style={{ borderRadius: "7px" }}
-      id="validationCustom011"
-      required
-      value={apellido}
-      onChange={e=> setApellido(e.target.value)}
-    />
-    <div className="valid-feedback text-primary">Campo validado!</div>
-  </div> */}
-  <div className="col-md-4">
-    <label htmlFor="validationCustom011" className="form-label card-title text-dark">
-      Numero de telefono
-    </label>
-    <input
-      type="number"
-      className="form-control"
-      style={{ borderRadius: "7px" }}
-      id="validationCustom011"
-      required
-      value={telefono}
-      onChange={e=> setTelefono(e.target.value)}
-    />
-    <div className="valid-feedback text-primary">Campo validado!</div>
-  </div>
   <div className="col-md-4">
     <label htmlFor="validationCustom02" className="form-label card-title text-dark">
       Copia Cédula
     </label>
     <input
-      type="number"
+      type="text"
       className="form-control"
       style={{ borderRadius: "7px" }}
       id="validationCustom02"
@@ -578,7 +544,7 @@ const handleInstallClick = async () => {
       Interes
     </label>
     <input
-      type="number"
+      type="text"
       className="form-control"
       style={{ borderRadius: "7px" }}
       id="validationCustom09"
@@ -743,7 +709,7 @@ const handleInstallClick = async () => {
       Número de cuenta
     </label>
     <input
-      type="number"
+      type="tel"
       className="form-control"
       style={{ borderRadius: "7px" }}
       id="validationCustom06"
