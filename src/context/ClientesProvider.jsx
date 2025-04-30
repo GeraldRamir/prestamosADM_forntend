@@ -10,9 +10,9 @@ export const ClientesProvider = ({ children }) => {
     const [clientesFiltrados, setClientesFiltrados] = useState([]);
     const [empresaSeleccionada, setEmpresaSeleccionada] = useState('');
 
-    useEffect(() => {
-        obtenerClientes(); // Llama a la función para obtener los clientes al cargar el componente
-    }, []); // El array vacío asegura que solo se ejecute una vez al montar el componente
+    // useEffect(() => {
+    //     obtenerClientes(); // Llama a la función para obtener los clientes al cargar el componente
+    // }, []); // El array vacío asegura que solo se ejecute una vez al montar el componente
     
     useEffect(() => {
         if (empresaSeleccionada === '') {
@@ -27,26 +27,30 @@ export const ClientesProvider = ({ children }) => {
 
     // Obtención de clientes al cargar el componente
 // Obtención de clientes al cargar el componente
-const obtenerClientes = async () => {
-    try {
-        const token = localStorage.getItem('token');
-        console.log("🔑 Token obtenido:", token); // Ver el token
-        if (!token) return;
-        
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            }
-        };
-
-        const { data } = await clienteAxios('/clientes', config);
-        console.log("📥 Datos de clientes obtenidos:", data); // Ver la respuesta de la API
-        setClientes(data); // Actualiza el estado de clientes
-    } catch (error) {
-        console.error("❌ Error al obtener clientes:", error); // Ver error si ocurre
-    }
-};
+useEffect(() => {
+    const obtenerClientes = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            console.log("🔑 Token obtenido:", token); // Ver el token
+            if (!token) return;
+            
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            };
+    
+            const { data } = await clienteAxios('/clientes', config);
+            console.log("📥 Datos de clientes obtenidos:", data); // Ver la respuesta de la API
+            setClientes(data); // Actualiza el estado de clientes
+        } catch (error) {
+            console.error("❌ Error al obtener clientes:", error); // Ver error si ocurre
+        }
+    };
+   
+    obtenerClientes(); // Llama a la función para obtener los clientes al cargar el componente
+}, []); // El array vacío asegura que solo se ejecute una vez al montar el componente
 
     
     // Función para guardar un nuevo cliente
@@ -136,7 +140,7 @@ const guardarCliente = async (cliente) => {
         <ClientesContext.Provider value={{
             clientes,
             clientesFiltrados, // Añadido
-            obtenerClientes,
+            // obtenerClientes,
             guardarCliente,
             eliminarCliente,
             editarCliente,
