@@ -157,8 +157,8 @@ const handleInstallClick = async () => {
       Banco,
       NumeroCuenta,
       ValorPrestamo,
-      ubicacion: ubicacion || null,  // Si está vacío, se asigna null
-      nombreUbicacion: nombreUbicacion || null, // Lo mismo para nombreUbicacion
+      ubicacion,
+      nombreUbicacion,
       Interes,
       telefono,
     });
