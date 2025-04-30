@@ -145,9 +145,8 @@ const handleInstallClick = async () => {
       error: false,
     });
   
-     const ubicacionEmpty= ubicacion || null  // Si está vacío, se asigna null
-    const nombreUbicacionEmpty= nombreUbicacion || null  // Si está vacío, se asigna null
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, telefono, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacionEmpty,nombreUbicacionEmpty, ValorPrestamo,Interes});
+
+    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, telefono, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacionEmpty,nombreUbicacionEmpty, ValorPrestamo,Interes, ubicacion, nombreUbicacion});
   
     form.classList.add('was-validated');
   };
@@ -448,7 +447,7 @@ const handleInstallClick = async () => {
           className="btn btn-success"
           onClick={handleInstallClick}
         >
-          Install the App
+          Install the appp
         </button>
       )}
     </div>
