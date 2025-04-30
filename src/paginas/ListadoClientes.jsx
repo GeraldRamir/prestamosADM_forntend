@@ -396,12 +396,12 @@ const ListadoClientes = () => {
                             <thead>
                               <tr>
                                 <th>Nombre</th>
-                                <th className="d-none d-xl-table-cell">Banco</th>
-                                <th className="d-none d-xl-table-cell">Empresa</th>
-                                <th className="d-none d-xl-table-cell">Fecha de Ingreso</th>
-                                <th className="d-none d-xl-table-cell">Fecha de Pago</th>
+                                <th>Banco</th>
+                                <th>Empresa</th>
+                                <th>Fecha de Ingreso</th>
+                                <th>Fecha de Pago</th>
                                 <th>Prestamo</th>
-                                <th className="d-none d-md-table-cell">Numero de cuenta</th>
+                                <th>Numero de cuenta</th>
                                 <th>Ubicación</th>
                               </tr>
                             </thead>
