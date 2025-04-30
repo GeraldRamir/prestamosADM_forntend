@@ -530,7 +530,7 @@ const handleInstallClick = async () => {
   </div>
   <div className="col-md-4">
     <label htmlFor="validationCustom011" className="form-label card-title text-dark">
-      appellido
+      appellidosss
     </label>
     <input
       type="text"

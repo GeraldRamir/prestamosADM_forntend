@@ -70,7 +70,8 @@ const guardarCliente = async (cliente) => {
         const { data } = await clienteAxios.post('/clientes', cliente, config);
         console.log("✅ Cliente guardado:", data); // Ver respuesta después de guardar el cliente
 
-        setClientes(prevClientes => [...prevClientes, data]); // Actualiza la lista de clientes
+        setClientes(prevClientes => [...prevClientes, { ...cliente, ...data }]);
+
 
         // Luego de guardar el cliente, obtenemos los pagos
         if (data._id) {
