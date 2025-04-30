@@ -66,8 +66,8 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
   </td>
   <td>{cliente.Banco}</td>
   <td>{cliente.Empresa}</td>
-  <td style={{whiteSpace: "nowrap"}}>{cliente.FechaIngreso.slice(0, 10)}</td>
-  <td style={{whiteSpace: "nowrap"}}>{cliente.FechaPago.slice(0, 10)}</td>
+  <td style={{whiteSpace: "nowrap"}}>{cliente.FechaIngreso}</td>
+  <td style={{whiteSpace: "nowrap"}}>{cliente.FechaPago}</td>
   <td>
     <span className="badge bg-success">RD$ {cliente.ValorPrestamo}</span>
   </td>
