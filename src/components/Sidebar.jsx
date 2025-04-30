@@ -141,7 +141,7 @@ const handleInstallClick = async () => {
     e.preventDefault();
     const form = e.target;
   
-    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta,ubicacion,nombreUbicacion, ValorPrestamo, Interes ].includes('')) {
+    if ([nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ubicacion, nombreUbicacion, ValorPrestamo, Interes].includes('')) {
       e.stopPropagation();
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -154,14 +154,28 @@ const handleInstallClick = async () => {
       msg: 'Cliente registrado correctamente',
       error: false,
     });
-
-    
-
-    
-    guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta,FechaIngreso, FechaPago,  ubicacion, nombreUbicacion, Banco, NumeroCuenta, ValorPrestamo, Interes });
+  
+    const fechaIngresoDate = new Date(`${FechaIngreso}T00:00:00Z`);
+    const fechaPagoDate = new Date(`${FechaPago}T00:00:00Z`);
+  
+    guardarCliente({
+      nombre,
+      copiaCedula,
+      Empresa,
+      ClaveTarjeta,
+      FechaIngreso: fechaIngresoDate,
+      FechaPago: fechaPagoDate,
+      ubicacion,
+      nombreUbicacion,
+      Banco,
+      NumeroCuenta,
+      ValorPrestamo,
+      Interes
+    });
   
     form.classList.add('was-validated');
   };
+  
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -673,7 +687,7 @@ const handleInstallClick = async () => {
       id="validationCustom04"
       required
       value={FechaIngreso}
-      onChange={e=> setFechaIngreso(new Date(`${e.target.value}T00:00:00Z`))}
+      onChange={e=> setFechaIngreso(e.target.value)}
     />
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
   </div>
@@ -688,7 +702,7 @@ const handleInstallClick = async () => {
       id="validationCustom010"
       required
       value={FechaPago}
-      onChange={e=> setFechaPago(new Date(`${e.target.value}T00:00:00Z`))}
+      onChange={e=> setFechaPago(e.target.value)}
     />
     <div className="invalid-feedback">Por favor, seleccione una fecha válida.</div>
   </div>
