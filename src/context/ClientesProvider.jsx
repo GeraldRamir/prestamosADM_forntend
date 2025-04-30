@@ -63,27 +63,19 @@ const obtenerClientes = async () => {
   
       const { data } = await clienteAxios.post('/clientes', cliente, config);
   
-      const clienteConId = {
-        ...cliente,
-        _id: data._id,
-        createdAt: data.createdAt,
-        updatedAt: data.updatedAt
-      };
-  
-      setClientes(prev => [...prev, clienteConId]);
+      setClientes(prev => [...prev, data]); // Usa el cliente real devuelto por el backend
   
       if (data._id) {
         obtenerPagos(data._id);
       }
   
-      console.log("✅ Cliente guardado localmente:", clienteConId);
+      console.log("✅ Cliente guardado desde backend:", data);
   
     } catch (error) {
       console.error("❌ Error al guardar cliente:", error);
     }
   };
   
-
     // Función para obtener los pagos de un cliente
     const obtenerPagos = async (clienteId) => {
         try {
