@@ -20,7 +20,7 @@ export default defineConfig({
         enabled: false, // Habilitar PWA también en desarrollo
       },
       workbox: {
-        cacheId: 'prestamos-app-v3',
+        cacheId: 'prestamos-app-v5',
         globPatterns: [
           '**/*.{js,css,html,png,webmanifest,jsx,ico,svg}'
         ],
@@ -68,18 +68,7 @@ export default defineConfig({
               },
             },
           },
-          // Aquí agregamos la caché para las solicitudes a la API
-          {
-            urlPattern: /\/api\//,  // Ajusta esta URL a tu endpoint de API
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              expiration: {
-                maxEntries: 20,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 días de caché
-              },
-            },
-          },
+          // Aquí agregamos la caché para las solicitudes a la AP
         ],
       },
       manifest: {
