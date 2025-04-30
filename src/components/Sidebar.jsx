@@ -147,7 +147,7 @@ const handleInstallClick = async () => {
 
   
     guardarCliente({ nombre, copiaCedula, Empresa, ClaveTarjeta, FechaIngreso, FechaPago, Banco, NumeroCuenta, ValorPrestamo,     ...(ubicacion !== '' && { ubicacion }),
-    ...(nombreUbicacion !== '' && { nombreUbicacion }), nombreUbicacion, Interes, telefono });
+    ...(nombreUbicacion !== '' && { nombreUbicacion }), Interes, telefono });
 
   
     form.classList.add('was-validated');
