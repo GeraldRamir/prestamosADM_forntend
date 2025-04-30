@@ -65,7 +65,7 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
           {cliente.nombre}
         </td>
         <td style={{ padding: "12px 24px" }}>
-          {cliente.telefono || localStorage.getItem(`telefonoCliente_${cliente._id}`)}
+          {cliente.telefono}
         </td>
 
 
@@ -77,11 +77,11 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
         <td style={{ padding: "12px 24px" }}>{cliente.Empresa}</td>
 
         <td style={{ padding: "12px 24px" }}>
-          {cliente.FechaIngreso || localStorage.getItem(`fechaIngresoCliente_${cliente._id}`)}
+          {cliente.FechaIngreso}
         </td>
         
         <td style={{ padding: "12px 24px" }}>
-          {cliente.FechaPago || localStorage.getItem(`fechaPagoCliente_${cliente._id}`)}
+          {cliente.FechaPago}
         </td>
 
         <td style={{ padding: "12px 24px" }}>
