@@ -697,7 +697,7 @@ const handleInstallClick = async () => {
       telefono
     </label>
     <input
-      type="tel"
+      type="number"
       className="form-control"
       style={{ borderRadius: "7px" }}
       id="validationCustom05"
@@ -712,7 +712,7 @@ const handleInstallClick = async () => {
       Número de cuenta
     </label>
     <input
-      type="tel"
+      type="number"
       className="form-control"
       style={{ borderRadius: "7px" }}
       id="validationCustom06"
