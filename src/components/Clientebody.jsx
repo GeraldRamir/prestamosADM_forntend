@@ -64,7 +64,7 @@ const ClienteBody = ({ cliente, onEdit, onDelete }) => {
   <td onClick={handleOpenModal} style={{ cursor: "pointer" }}>
     {cliente.nombre}
   </td>
-  <td>{cliente.Banco}</td>
+  <td>{cliente.telefono}</td>
   <td>{cliente.Empresa}</td>
   <td style={{whiteSpace: "nowrap"}}>{cliente.FechaIngreso}</td>
   <td style={{whiteSpace: "nowrap"}}>{cliente.FechaPago}</td>
